@@ -1,1 +1,2 @@
-# First MERN application based on an eCommerce site similar to that of Depop/Shein/Etsy.
+# First MERN application 
+## Based on an eCommerce site similar to that of Depop/Shein/Etsy.
