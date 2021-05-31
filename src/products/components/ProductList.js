@@ -13,6 +13,7 @@ const ProductList = props => {
             key={p.id}
             id={p.id}
             image={p.image}
+            brand={p.brand}
             name={p.name}
             price={p.price}
             stock={p.stock}

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Card = props => {
   return (
-    <div className={`rounded-sm shadow bg-white ${props.className}`}>
+    <div className={`${props.className} rounded-lg shadow-lg bg-white`}>
       {props.children}
     </div>
   );

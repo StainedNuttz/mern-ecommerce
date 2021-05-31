@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from './Button';
-import Card from './Card';
+import Button from '../../shared/components/UI/Button';
+import Card from '../../shared/components/UI/Card';
+import Alert from '../../shared/components/UI/Alert';
 
 const ProductListItem = props => {
   let stock;
@@ -12,7 +13,12 @@ const ProductListItem = props => {
     stock = <span className="text-red-600">Out of stock</span>
   }
 
-  let link = `/${props.name.split(' ').join('-')}/${props.id}`
+  let short = props.name.split(/[\s,]+/).join('-').toLowerCase();
+  let link = `${short}/${props.id}`;
+
+  const [isAlertAlive, setIsAlertAlive] = useState(false);
+  const addToCartHandler = () => setIsAlertAlive(true);
+  const closeAlert = () => setIsAlertAlive(false);
 
   return (
     <Card className="grid grid-cols-5 grid-rows-1 xl:grid-cols-1">
@@ -24,16 +30,18 @@ const ProductListItem = props => {
           <div className="text-yellow-600 text-xs">
             <span className="">{props.rating} / 5</span> <Link to={`${link}#reviews`}><span className="text-black hover:text-blue-800">({props.reviews} reviews)</span></Link>
           </div>
+          <Link className="block mt-2 text-xs text-gray-700 hover:text-blue-600">{props.brand}</Link>
           <Link to={link}>
-            <h2 id="name" className="text-gray-800 text-lg mt-0.5 hover:text-blue-600 line-clamp-2">
+            <h2 id="name" className="text-gray-800 leading-6 text-lg hover:text-blue-600 line-clamp-2">
               {props.name}
             </h2>
           </Link>
         </div>
-        <div className="flex flex-col mt-2">
+        <div className="flex flex-col mt-8">
           <h3 className="text-2xl font-semibold text-gray-900">{props.price}</h3>
           {stock}
-          <Button text="Add to cart" />
+          <Button disabled={props.stock === 0} className="mt-2 rounded-lg font-normal text-lg p-2" onClick={addToCartHandler}>Add to cart</Button>
+          <Alert close={closeAlert} show={isAlertAlive}>Added {props.name} to cart!</Alert>
         </div>
       </div>
     </Card>
