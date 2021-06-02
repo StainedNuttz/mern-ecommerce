@@ -7,7 +7,7 @@ const Navigation = props => {
     <nav>
       <ul className={`flex items-center ${props.className}`}>
         {props.links.map(l => (
-          <NavigationLink onClick={props.onClick} text={l.text} link={l.link} nounderline={l.nounderline} />
+          <NavigationLink key={Math.random()} onClick={props.onClick} text={l.text} link={l.link} nounderline={l.nounderline} />
         ))}
       </ul>
     </nav>

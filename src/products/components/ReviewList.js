@@ -8,12 +8,17 @@ const ReviewList = props => {
   } else {
     return (
       <ul className="flex flex-col text-sm space-y-4">
-        { props.reviews.map(r => (<ReviewListItem 
-          rating={r.rating}
-          author={r.author}
-          title={r.title}
-          text={r.text}
-        />)) }
+        {
+          props.reviews.map((r, index) => (
+            <ReviewListItem
+              key={Math.random()}
+              rating={r.rating}
+              author={r.author}
+              title={r.title}
+              text={r.text}
+            />
+          ))
+        }
       </ul>
     );
   }

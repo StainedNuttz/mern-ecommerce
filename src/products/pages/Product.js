@@ -54,7 +54,7 @@ const DUMMY = [
 
 const Product = () => {
   const id = useParams().productId;
-  const short = useParams().productShortName;
+  // const short = useParams().productShortName;
   // use the id to fetch the product data from backend!
   // if no product exists, error!
   // const found = (parseInt(id) < 5) ? true : false;

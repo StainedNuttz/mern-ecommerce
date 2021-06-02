@@ -15,6 +15,7 @@ const ProductListItem = props => {
 
   let short = props.name.split(/[\s,]+/).join('-').toLowerCase();
   let link = `${short}/${props.id}`;
+  console.log(link);
 
   const [isAlertAlive, setIsAlertAlive] = useState(false);
   const addToCartHandler = () => setIsAlertAlive(true);
@@ -30,7 +31,7 @@ const ProductListItem = props => {
           <div className="text-yellow-600 text-xs">
             <span className="">{props.rating} / 5</span> <Link to={`${link}#reviews`}><span className="text-black hover:text-blue-800">({props.reviews} reviews)</span></Link>
           </div>
-          <Link className="block mt-2 text-xs text-gray-700 hover:text-blue-600">{props.brand}</Link>
+          <Link to={link} className="block mt-2 text-xs text-gray-700 hover:text-blue-600">{props.brand}</Link>
           <Link to={link}>
             <h2 id="name" className="text-gray-800 leading-6 text-lg hover:text-blue-600 line-clamp-2">
               {props.name}
