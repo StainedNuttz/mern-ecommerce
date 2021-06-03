@@ -1,4 +1,3 @@
-import { findAllByTestId } from '@testing-library/dom';
 import React, { useState, useEffect } from 'react';
 
 import Button from '../../shared/components/UI/Button';
@@ -17,50 +16,39 @@ const Pagination = props => {
     props.onInitPage(paginations[1]);
   }, []);
 
-  const onForward = () => {
-    const newPage = currentPage + 1;
-    if (newPage === pages) { 
-      setForwardBtnDisabled(true);
-      setEndBtnDisabled(true);
-    } else if (backBtnDisabled && newPage > 1) {
-      setBackBtnDisabled(false)
-      setStartBtnDisabled(false);
-    }
-    pageChangeHandler(newPage);
-  }
-  
-  const onBack = () => {
-    const newPage = currentPage - 1;
-    if (newPage === 1) { 
-      setBackBtnDisabled(true);
-      setStartBtnDisabled(true);
-    } else if (forwardBtnDisabled && newPage < pages) {
-      setForwardBtnDisabled(false) 
-      setEndBtnDisabled(false)
-    }
-    pageChangeHandler(newPage);
-  }
-
-  const onGotoStart = () => {
-    setForwardBtnDisabled(false);
-    setEndBtnDisabled(false);
+  // button states
+  const firstPage = () => {
+    if (forwardBtnDisabled) setForwardBtnDisabled(false);
+    if (endBtnDisabled) setEndBtnDisabled(false);
     setBackBtnDisabled(true);
     setStartBtnDisabled(true);
-    pageChangeHandler(1);
   }
-
-  const onGotoEnd = () => {
+  const lastPage = () => {
     setForwardBtnDisabled(true);
     setEndBtnDisabled(true);
-    setBackBtnDisabled(false);
-    setStartBtnDisabled(false);
-    pageChangeHandler(pages);
+    if (backBtnDisabled) setBackBtnDisabled(false);
+    if (startBtnDisabled) setStartBtnDisabled(false);
   }
+  const otherPage = () => {
+    if (forwardBtnDisabled) setForwardBtnDisabled(false);
+    if (endBtnDisabled) setEndBtnDisabled(false);
+    if (backBtnDisabled) setBackBtnDisabled(false);
+    if (startBtnDisabled) setStartBtnDisabled(false);
+  }
+  
+  const pageChangeHandler = newPage => {
+    // handle button disabled/enabled states
+    if (newPage === 1) {
+      firstPage() 
+    } else if (newPage === pages) {
+      lastPage()
+    } else {
+      otherPage()
+    }
 
-  const pageChangeHandler = page => {
-    setCurrentPage(page);
-    console.log('new page', page)
-    props.onPageChange(paginations[page-1]);
+    // handle page change logic
+    setCurrentPage(newPage);
+    props.onPageChange(paginations[newPage-1]);
   }
 
   let pages = Math.ceil(props.array.length / props.perPage);
@@ -78,10 +66,10 @@ const Pagination = props => {
         <ul className="inline-flex text-white rounded-lg">
           {/* LEFT BUTTON */}
           <li className="">
-            <Button disabled={startBtnDisabled} onClick={onGotoStart} className="p-2 rounded-l-lg">{'<<'}</Button>
+            <Button disabled={startBtnDisabled} onClick={() => pageChangeHandler(1)} className="p-2 rounded-l-lg">{'<<'}</Button>
           </li>
           <li className="">
-            <Button disabled={backBtnDisabled} onClick={onBack} className="p-2">{'<'}</Button>
+            <Button disabled={backBtnDisabled} onClick={() => pageChangeHandler(currentPage - 1)} className="p-2">{'<'}</Button>
           </li>
 
 
@@ -91,11 +79,11 @@ const Pagination = props => {
 
           {/* RIGHT BUTTON */}
           <li className="">
-            <Button disabled={forwardBtnDisabled} onClick={onForward} className="p-2">{'>'}</Button>
+            <Button disabled={forwardBtnDisabled} onClick={() => pageChangeHandler(currentPage + 1)} className="p-2">{'>'}</Button>
           </li>
           {/* RIGHT BUTTON */}
           <li className="">
-            <Button disabled={endBtnDisabled} onClick={onGotoEnd} className="p-2 rounded-r-lg">{'>>'}</Button>
+            <Button disabled={endBtnDisabled} onClick={() => pageChangeHandler(pages)} className="p-2 rounded-r-lg">{'>>'}</Button>
           </li>
         </ul>)
       }

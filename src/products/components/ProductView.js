@@ -37,6 +37,9 @@ const ProductView = props => {
   }
 
   const dummyReviews = [
+    { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
+    { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
+    { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies a ist total' },
     { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
     { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
     { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
@@ -45,31 +48,19 @@ const ProductView = props => {
     { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
     { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
     { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
-    { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
+    { rating: 1, author: 'Josef Wimmer', title: 'I lol, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
     { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
     { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
     { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
-    { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
+    { rating: 1, author: 'Josef Wimmer', title: 'I lol, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
     { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
     { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
     { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
-    { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
+    { rating: 1, author: 'Josef Wimmer', title: 'I d, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
     { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
     { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
     { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
-    { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
-    { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
-    { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
-    { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
-    { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
-    { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
-    { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
-    { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
-    { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
-    { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
-    { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
-    { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
-    { rating: 1, author: 'Josef Wimmer', title: 'I hoffe, dass ich ein Refund bekommen kann', text: 'Schlecht. I hob das gkoft und es war kaputt...' },
+    { rating: 1, author: 'Josef Wimmer', title: 'I d, dass ich ein Refund bekommen kann', text: 'fsjfkldsjflasjgarejgiarjugrgharjglhgakfdfdfgdfuhgurhfueahfuh djs djsad a   a dwj djw wcicicj kik sdj jawhda whd ah . I hob das gkoft und es war kaputt... ich brauche hilfe, i hab gtreffen' },
     { rating: 4, author: 'Sandra Wimmer', title: 'i lieb des', text: 'zu teuer aber gut' },
     { rating: 4, author: 'Andrea Reitmaier', title: 'Super!', text: 'Stell dir vor, dass du Gay bist. Das ist wie dies Zeug.' },
     { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
@@ -110,7 +101,8 @@ const ProductView = props => {
   }
   const onPageChange = p => {
     setCurrentPageValues(p);
-    // paginationRef.current.scrollIntoView({behavior: 'smooth'});
+    reviewsRef.current.style.height = window.getComputedStyle(reviewsRef.current, null).getPropertyValue('height');
+    writeReviewRef.current.scrollIntoView({behavior: 'smooth'});
   }
 
   const paginationRef = useRef(null);
@@ -122,7 +114,7 @@ const ProductView = props => {
       {/* PRODUCT */}
       <Card className="p-6 py-5 md:col-span-2 md:row-span-1" style={{maxWidth: '32rem'}}>
         <Link to={'/'} className="text-xs block text-left text-gray-700 hover:text-blue-600">{brand}</Link>
-        <h2 className="text-left font-semibold text-gray-800 pr-5">
+        <h2 className="text-left text-gray-800 pr-5">
           {name}
         </h2>
         <div className="text-yellow-600 text-xs text-left mt-1">
@@ -141,7 +133,7 @@ const ProductView = props => {
               <div className="text-base font-normal">{_stock}</div>
             </div>
             <div className="self-start mt-1">
-              <Button disabled={stock === 0} className="p-2 px-6 rounded-lg font-normal text-base">Add to cart</Button>
+              <Button disabled={stock === 0} className="p-2 px-6">Add to cart</Button>
             </div>
           </div>
           <div className="flex flex-col col-span-2 space-y-1 mt-4">
@@ -174,21 +166,27 @@ const ProductView = props => {
       {/* hooking this up is simple */}
       {/* 1. hook in array of data from back-end (in this case, reviews) */}
       {/* 2. choose perPage and a callback to change this components state to sync with pagination */}
-
-      <Card ref={writeReviewRef} className="p-5 py-3 md:col-span-2 text-left">
-        {currentPageValues.length > 0 ? <p>Write a review...</p> : <p>No reviews! Why don't you write one?</p>}
+ 
+      <Card ref={writeReviewRef} className="p-3 md:col-span-2 text-left">
+        {currentPageValues.length > 0 ? 
+         <>
+            <p className="text-base mb-2 p-2 border text-yellow-600 bg-yellow-100 border-yellow-400">You purchased this item on <span className="font-semibold">May 14</span></p>
+            <textarea className="border-gray-300 resize-none w-full text-gray-700 focus:ring-0 focus:border-blue-400" placeholder="Write a review" />
+         </> :
+          <p>No reviews! Why don't you write one?</p>}
+          
       </Card>
-      <Card ref={reviewsRef} className="p-5 text-left md:col-span-2">
+      <Card ref={reviewsRef} className="p-5 text-left md:col-span-2 relative">
         <div className="pb-4">
           <h3 className="text-2xl font-semibold">Reviews</h3>
           <p className="text-sm">There are <span className="font-semibold">{reviews}</span> written reviews for this product</p>
         </div>
         <ReviewList reviews={currentPageValues} />
-        <Splitter className="my-4" />
-        <div ref={paginationRef}>
+        <Splitter className="mt-4 mb-12" />
+        <div className="absolute bottom-3 left-5" ref={paginationRef}>
           <Pagination
             array={dummyReviews}
-            perPage={10}
+            perPage={8}
             onPageChange={onPageChange}
             onInitPage={onPageInit}
           />
