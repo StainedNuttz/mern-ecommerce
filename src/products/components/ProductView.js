@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import Splitter from '../../shared/components/UI/Splitter';
 import Card from '../../shared/components/UI/Card';
 import Button from '../../shared/components/UI/Button';
+import Info from '../../shared/components/UI/Info';
+
+import Input from '../../shared/components/Forms/Input';
+
 import ReviewList from './ReviewList';
 import ProductViewSection from './ProductViewSection';
 import Pagination from './Pagination';
@@ -170,8 +174,16 @@ const ProductView = props => {
       <Card ref={writeReviewRef} className="p-3 md:col-span-2 text-left">
         {currentPageValues.length > 0 ? 
          <>
-            <p className="text-base mb-2 p-2 border text-yellow-600 bg-yellow-100 border-yellow-400">You purchased this item on <span className="font-semibold">May 14</span></p>
-            <textarea className="border-gray-300 resize-none w-full text-gray-700 focus:ring-0 focus:border-blue-400" placeholder="Write a review" />
+            <Info color="yellow">
+              You purchased this item on <span className="font-semibold">May 14</span>
+            </Info>
+            <Input 
+              id="write-review"
+              type="textarea"
+              placeholder="Write a review"
+              errorText="Please enter in a valid value"
+              validators={[]}
+            />
          </> :
           <p>No reviews! Why don't you write one?</p>}
           

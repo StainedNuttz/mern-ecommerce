@@ -41,7 +41,7 @@ const ProductListItem = props => {
         <div className="flex flex-col mt-8">
           <h3 className="text-2xl font-semibold text-gray-900">{props.price}</h3>
           {stock}
-          <Button disabled={props.stock === 0} className="mt-2 rounded-lg font-normal text-lg p-2" onClick={addToCartHandler}>Add to cart</Button>
+          <Button disabled={props.stock === 0} className="mt-2 p-2" onClick={addToCartHandler}>Add to cart</Button>
           <Alert close={closeAlert} show={isAlertAlive}>Added {props.name} to cart!</Alert>
         </div>
       </div>
