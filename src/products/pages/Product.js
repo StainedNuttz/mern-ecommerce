@@ -9,7 +9,7 @@ import image3 from '../../home/pages/shoe.jpg';
 import image4 from '../../home/pages/beer.jpg';
 
 const DUMMY = [
-  {},
+  undefined,
   {
     id: '1',
     brand: 'Apple Inc.',
@@ -54,13 +54,14 @@ const DUMMY = [
 
 const Product = () => {
   const id = useParams().productId;
-  // const short = useParams().productShortName;
-  // use the id to fetch the product data from backend!
-  // if no product exists, error!
-  // const found = (parseInt(id) < 5) ? true : false;
-  // const {name, price, image, ...rest} = DUMMY[id];
-  let found = false;
-  if (id > 0 && id < 5) { found = true }
+  const found = !(typeof DUMMY[id] === 'undefined');
+  // // const short = useParams().productShortName;
+  // // use the id to fetch the product data from backend!
+  // // if no product exists, error!
+  // // const found = (parseInt(id) < 5) ? true : false;
+  // // const {name, price, image, ...rest} = DUMMY[id];
+  // let found = false;
+  // if (id > 0 && id < 5) { found = true }
 
   return (
     <div className="text-center text-xl"> 

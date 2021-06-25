@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+import { useForm } from '../../shared/hooks/useForm';
 
 import Splitter from '../../shared/components/UI/Splitter';
 import Card from '../../shared/components/UI/Card';
@@ -7,6 +9,7 @@ import Button from '../../shared/components/UI/Button';
 import Info from '../../shared/components/UI/Info';
 
 import Input from '../../shared/components/Forms/Input';
+import { validate, VALIDATE_REQUIRED } from '../../shared/utils/validations';
 
 import ReviewList from './ReviewList';
 import ProductViewSection from './ProductViewSection';
@@ -17,7 +20,6 @@ import paypal from '@iconify-icons/logos/paypal';
 import visa from '@iconify-icons/cib/cc-visa';
 import mastercard from '@iconify-icons/grommet-icons/mastercard';
 import applePay from '@iconify-icons/logos/apple-pay';
-
 import { TruckIcon } from '@heroicons/react/solid';
 import { CashIcon } from '@heroicons/react/solid';
 
@@ -27,12 +29,16 @@ const ProductView = props => {
   const delivery = <p>Delivers to the United Kingdom.</p>
   const policy = <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt at id accusantium neque quo, quam maiores eius molestias cumque laboriosam corrupti eos nisi fugiat quia. Laudantium sapiente eos commodi cupiditate. Sint libero iure quia modi, commodi ratione tempore quod aliquid distinctio ipsam. Ad autem repudiandae asperiores non facere, odit inventore adipisci</p>
 
+  const paginationRef = useRef(null);
+  const reviewsRef = useRef(null);
+  const writeReviewRef = useRef(null);
+  
   let date = new Date();
   date.setDate(date.getDate() + 3);
   date = date.toDateString().split(' ');
   date.pop();
   date = date.join(' ');
-
+  
   let _stock;
   if (stock > 0) {
     _stock = <p className="text-green-600">{`${stock} in stock`}</p>
@@ -98,20 +104,28 @@ const ProductView = props => {
     { rating: 5, author: 'Finn Luca', title: 'i wunsche, dass i ein Cock haben', text: 'dies Zeug ist total' },
   ];
 
+  // paginations
   const [currentPageValues, setCurrentPageValues] = useState([]);
-  
+
   const onPageInit = p => {
     setCurrentPageValues(p);
   }
+
   const onPageChange = p => {
     setCurrentPageValues(p);
     reviewsRef.current.style.height = window.getComputedStyle(reviewsRef.current, null).getPropertyValue('height');
     writeReviewRef.current.scrollIntoView({behavior: 'smooth'});
   }
 
-  const paginationRef = useRef(null);
-  const reviewsRef = useRef(null);
-  const writeReviewRef = useRef(null);
+  const [formState, changeHandler, submitHandler] = useForm(
+    {
+      'write-review': {
+        value: '',
+        isValid: false
+      }
+    },
+    false
+  );
 
   return (
     <div className="grid md:grid-cols-3 px-1 gap-2">
@@ -166,28 +180,39 @@ const ProductView = props => {
         <ProductViewSection header="Our policy">{policy}</ProductViewSection>
       </Card>
 
-      {/* REVIEWS */}
-      {/* hooking this up is simple */}
-      {/* 1. hook in array of data from back-end (in this case, reviews) */}
-      {/* 2. choose perPage and a callback to change this components state to sync with pagination */}
- 
+      {/* WRITE REVIEW */}
       <Card ref={writeReviewRef} className="p-3 md:col-span-2 text-left">
         {currentPageValues.length > 0 ? 
          <>
             <Info color="yellow">
               You purchased this item on <span className="font-semibold">May 14</span>
             </Info>
-            <Input 
-              id="write-review"
-              type="textarea"
-              placeholder="Write a review"
-              errorText="Please enter in a valid value"
-              validators={[]}
-            />
+            <form>
+              <Input
+                id="write-review"
+                type="textarea"
+                placeholder="Write a review"
+                errorText="Please enter in a review before submitting"
+                successText="Review submitted"
+                onChange={e => {
+                  changeHandler('write-review',
+                    e.target.value,
+                    validate(e.target.value, [VALIDATE_REQUIRED])
+                  );
+                }}
+                formState={formState}
+              />
+              <Button onClick={submitHandler} className="p-2 px-3 mt-1 md:mt-2">Submit</Button>
+            </form>
          </> :
           <p>No reviews! Why don't you write one?</p>}
           
       </Card>
+
+      {/* REVIEWS */}
+      {/* hooking this up is simple */}
+      {/* 1. hook in array of data from back-end (in this case, reviews) */}
+      {/* 2. choose perPage and a callback to change this components state to sync with pagination */}
       <Card ref={reviewsRef} className="p-5 text-left md:col-span-2 relative">
         <div className="pb-4">
           <h3 className="text-2xl font-semibold">Reviews</h3>

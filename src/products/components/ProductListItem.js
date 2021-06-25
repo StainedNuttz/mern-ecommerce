@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useAlert } from '../../shared/hooks/useAlert';
+
 import Button from '../../shared/components/UI/Button';
 import Card from '../../shared/components/UI/Card';
 import Alert from '../../shared/components/UI/Alert';
@@ -15,11 +17,8 @@ const ProductListItem = props => {
 
   let short = props.name.split(/[\s,]+/).join('-').toLowerCase();
   let link = `${short}/${props.id}`;
-  console.log(link);
 
-  const [isAlertAlive, setIsAlertAlive] = useState(false);
-  const addToCartHandler = () => setIsAlertAlive(true);
-  const closeAlert = () => setIsAlertAlive(false);
+  const [alertAlive, showAlert, hideAlert] = useAlert(5);
 
   return (
     <Card className="grid grid-cols-5 grid-rows-1 xl:grid-cols-1">
@@ -31,18 +30,16 @@ const ProductListItem = props => {
           <div className="text-yellow-600 text-xs">
             <span className="">{props.rating} / 5</span> <Link to={`${link}#reviews`}><span className="text-black hover:text-blue-800">({props.reviews} reviews)</span></Link>
           </div>
-          <Link to={link} className="block mt-2 text-xs text-gray-700 hover:text-blue-600">{props.brand}</Link>
-          <Link to={link}>
-            <h2 id="name" className="text-gray-800 leading-6 text-lg hover:text-blue-600 line-clamp-2">
-              {props.name}
-            </h2>
+          <Link to={link} className="mt-2 text-xs text-gray-700 hover:text-blue-600">{props.brand}</Link>
+          <Link id="name" className="text-gray-800 leading-6 text-lg hover:text-blue-600" to={link}>
+            <p className="">{props.name}</p>
           </Link>
         </div>
         <div className="flex flex-col mt-8">
           <h3 className="text-2xl font-semibold text-gray-900">{props.price}</h3>
           {stock}
-          <Button disabled={props.stock === 0} className="mt-2 p-2" onClick={addToCartHandler}>Add to cart</Button>
-          <Alert close={closeAlert} show={isAlertAlive}>Added {props.name} to cart!</Alert>
+          <Button disabled={props.stock === 0} className="mt-2 p-2" onClick={showAlert}>Add to cart</Button>
+          <Alert id={short} close={hideAlert} show={alertAlive}>Added {props.name} to cart!</Alert>
         </div>
       </div>
     </Card>

@@ -1,14 +1,10 @@
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // or 'media' or 'class'
+  purge: ['src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   mode: 'jit',
   theme: {
     extend: {
       screens: {
         'xs': '500px'
-      },
-      spacing: {
-        
       },
       fontFamily: {
         sans: ['Noto Sans SC', 'sans-serif']
@@ -17,15 +13,10 @@ module.exports = {
     }
   },
   variants: {
-    extend: {
-      opacity: ['disabled'],
-      cursor: ['disabled'],
-      backgroundColor: ['disabled'],
-      textColor: ['disabled']
-    }
+    extend: {},
   },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/line-clamp'),
-  ],
+  ]
 }
