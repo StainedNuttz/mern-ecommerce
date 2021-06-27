@@ -1,6 +1,10 @@
 # Ecommerce application created with the MERN stack
 
-## React ~
-## node.js X
-## Express.js X
-## MongoDB X
+## React
+currently working on
+## node.js
+not started
+## Express.js
+not started
+## MongoDB
+not started
