@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useForm } from '../../shared/hooks/useForm';
+import Form from '../../shared/components/Forms/Form';
 
 import Splitter from '../../shared/components/UI/Splitter';
 import Card from '../../shared/components/UI/Card';
@@ -9,7 +9,7 @@ import Button from '../../shared/components/UI/Button';
 import Info from '../../shared/components/UI/Info';
 
 import Input from '../../shared/components/Forms/Input';
-import { validate, VALIDATE_REQUIRED } from '../../shared/utils/validations';
+import { VALIDATE_MIN, VALIDATE_MAX, VALIDATE_REQUIRED } from '../../shared/utils/validations';
 
 import ReviewList from './ReviewList';
 import ProductViewSection from './ProductViewSection';
@@ -117,15 +117,20 @@ const ProductView = props => {
     writeReviewRef.current.scrollIntoView({behavior: 'smooth'});
   }
 
-  const [formState, changeHandler, submitHandler] = useForm(
+  const inputs = [
     {
-      'write-review': {
-        value: '',
-        isValid: false
+      id: 'write-review',
+      data: {
+        type: 'textarea',
+        placeholder: 'Write a review',
+        validityRules: {
+          [VALIDATE_REQUIRED]: 'Please enter in a review before submitting',
+          [VALIDATE_MIN]: { errorMsg: 'Your review must be at least 5 characters long', params: 5 },
+          [VALIDATE_MAX]: { errorMsg: 'lol your cock is too long', params: 10 }
+        }
       }
-    },
-    false
-  );
+    }
+  ]
 
   return (
     <div className="grid md:grid-cols-3 px-1 gap-2">
@@ -185,25 +190,9 @@ const ProductView = props => {
         {currentPageValues.length > 0 ? 
          <>
             <Info color="yellow">
-              You purchased this item on <span className="font-semibold">May 14</span>
+              You purchased this item on <span className="font-semibold">Jun 14</span>
             </Info>
-            <form>
-              <Input
-                id="write-review"
-                type="textarea"
-                placeholder="Write a review"
-                errorText="Please enter in a review before submitting"
-                successText="Review submitted"
-                onChange={e => {
-                  changeHandler('write-review',
-                    e.target.value,
-                    validate(e.target.value, [VALIDATE_REQUIRED])
-                  );
-                }}
-                formState={formState}
-              />
-              <Button onClick={submitHandler} className="p-2 px-3 mt-1 md:mt-2">Submit</Button>
-            </form>
+            <Form initialFormInputs={inputs} />
          </> :
           <p>No reviews! Why don't you write one?</p>}
           

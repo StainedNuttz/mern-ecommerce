@@ -5,15 +5,12 @@ const formReducer = (state, action) => {
   switch (action.type) {
     case 'INPUT_CHANGE':
       let formIsValid = true, inputIsValid = true;
-      
-      console.log(action.value)
-      
-      const currentInputState = state.inputs[action.id];
 
+      const inp = state.inputs[action.id];
       // check validity of current input
-      const validity = validate(action.value, action.validators);
-      for (let v in validity) {
-        if (!v) {
+      const validityState = validate(action.value, inp.validityRules);
+      for (let v in validityState) {
+        if (!validityState[v]) {
           inputIsValid = false;
           break;
         }
@@ -21,95 +18,106 @@ const formReducer = (state, action) => {
 
       // check validity of all other inputs and determine main form validity
       if (inputIsValid) {
+        console.log(action.id)
         for (let i in state.inputs) {
+          if (i === action.id) continue;
           formIsValid = formIsValid && state.inputs[i].isValid;
         }
       } else { formIsValid = false }
+
+      console.log(action.id, inputIsValid)
       
       return {
         ...state,
         isValid: formIsValid,
+        submittedSuccess: state.submittedSuccess ? false : state.submittedSuccess,
         inputs: {
           ...state.inputs,
           [action.id]: {
             ...state.inputs[action.id],
             value: action.value,
             isValid: inputIsValid,
-            validity
+            validity: validityState
           }
         }
       }
 
     case 'SUBMIT':
+      // IF FORM IS VALID
       if (state.isValid) {
+        const resetInputs = {
+          ...state.inputs
+        }
+
+        for (let i in state.inputs) {
+          resetInputs[i] = {
+            ...state.inputs[i],
+            value: '',
+            isValid: false,
+            validity: validate('', state.inputs[i].validityRules)
+          }
+        }
+        
         return {
-          ...state,
+          inputs: resetInputs,
+          submitted: false,
+          isValid: false,
           submittedSuccess: true,
         }
-      } else {
+      // IF FORM IS ALREADY SUCCESSFUL
+      } else if (state.submittedSuccess) {
+        return {
+          ...state,
+          submitted: true,
+          submittedSuccess: false
+        }
+      // IF FORM IS NOT VALID
+      } else if (!state.isValid) {
         return {
           ...state,
           submitted: true,
         }
       }
-    case 'RESET_TYPE':
-      return action.initialFormState;
-    case 'RESET_SUBMIT':
-      return {
-        ...action.initialFormState,
-        submitted: true
-      }
   }
 }
 
 // custom hook to deal with form state
-export const useForm = initialInputs => {  
+export const useForm = (initialInputs, initialFormState) => {  
   let inputs = {}
+  let resetInputs = {}
 
+  // initial values
   initialInputs.forEach(i => {
     inputs[i.id] = {
       value: i.data.value || '',
       isValid: i.data.isValid || false,
-      validators: i.data.validators || {}
+      validityRules: i.data.validityRules || {},
+      validity: validate(i.data.value || '', i.data.validityRules)
     }
   });
 
-  const initialFormState = {
+  const initialFormValues = {
     submitted: false,
     submittedSuccess: false,
-    isValid: false,
-    inputs: inputs
+    isValid: initialFormState && initialFormState.isValid || false,
+    inputs
   }
 
-  const [formState, dispatch] = useReducer(formReducer, initialFormState);
+  const [formState, dispatch] = useReducer(formReducer, initialFormValues);
 
   const submitHandler = e => {
     e.preventDefault();
-    if (formState.submittedSuccess) {
-      dispatch({
-        type: 'RESET_SUBMIT',
-        initialFormState
-      })
-    } else {
-      dispatch({
-        type: 'SUBMIT',
-      });
-    }
+    dispatch({
+      type: 'SUBMIT'
+    })
   }
 
   const changeHandler = (id, value) => {
-    if (formState.submittedSuccess) {
-      dispatch({
-        type: 'RESET_TYPE',
-        initialFormState
-      })
-    } else {
-      dispatch({
-        type: 'INPUT_CHANGE',
-        id,
-        value
-      });
-    }
+    dispatch({
+      type: 'INPUT_CHANGE',
+      id,
+      value
+    });
   }
 
   return [formState, changeHandler, submitHandler];

@@ -5,13 +5,17 @@ import { VALIDATE_REQUIRED, VALIDATE_EMAIL, VALIDATE_MAX } from '../../shared/ut
 import Form from '../../shared/components/Forms/Form';
 
 const Login = () => {
+  const initialFormState = {
+    isValid: false
+  }
+
   const inputs = [
     {
       id: 'email',
       data: {
         type: 'text',
         placeholder: 'Email',
-        validators: {
+        validityRules: {
           [VALIDATE_EMAIL]: 'Please enter in a valid email'
         }
       }
@@ -21,15 +25,14 @@ const Login = () => {
       data: {
         type: 'password',
         placeholder: 'Password',
-        validators: {
+        validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in your password',
-          [VALIDATE_MAX]: 'Your password must be less than 16 characters'
         }
       }
     }
   ]
 
-  return <Form formInputs={inputs} />
+  return <Form initialFormInputs={inputs} initialFormState={initialFormState} />
 }
 
 export default Login;

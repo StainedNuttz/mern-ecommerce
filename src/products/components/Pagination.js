@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import Button from '../../shared/components/UI/Button';
 
+// TODO: REDO THIS WITH HOOK => usePagination
+
 const Pagination = props => {
   const [currentPage, setCurrentPage] = useState(1);
 
