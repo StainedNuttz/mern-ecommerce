@@ -57,6 +57,9 @@ const formReducer = (state, action) => {
             validity: validate('', state.inputs[i].validityRules)
           }
         }
+
+        // form onSubmit
+        action.onSubmit();
         
         return {
           inputs: resetInputs,
@@ -82,9 +85,8 @@ const formReducer = (state, action) => {
 }
 
 // custom hook to deal with form state
-export const useForm = (initialInputs, initialFormState) => {  
+export const useForm = (initialInputs, initialFormState, onSubmit) => {  
   let inputs = {}
-  let resetInputs = {}
 
   // initial values
   initialInputs.forEach(i => {
@@ -108,7 +110,8 @@ export const useForm = (initialInputs, initialFormState) => {
   const submitHandler = e => {
     e.preventDefault();
     dispatch({
-      type: 'SUBMIT'
+      type: 'SUBMIT',
+      onSubmit
     })
   }
 

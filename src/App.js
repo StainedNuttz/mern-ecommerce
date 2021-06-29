@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 
 import Header from './shared/components/Header/Header';
@@ -11,35 +11,78 @@ import Explore from './explore/pages/Explore';
 import Cart from './cart/pages/Cart';
 import Product from './products/pages/Product';
 
+import { AuthContext } from './shared/context/auth-context';
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  // define routes
+  let routes;
+
+  if (isLoggedIn) {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/explore" exact>
+          <Explore />
+        </Route>
+        <Route path="/:productShortName/:productId" exact>
+          <Product />
+        </Route>
+        <Route path="/cart" exact>
+          <Cart />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/explore" exact>
+          <Explore />
+        </Route>
+        <Route path="/:productShortName/:productId" exact>
+          <Product />
+        </Route>
+        <Route path="/cart" exact>
+          <Cart />
+        </Route>
+        <Route path="/signup" exact>
+          <Signup />
+        </Route>
+        <Route path="/login" exact>
+          <Login />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    );
+  }
+
   return (
-    <Router>
-      <Header />
-      <main className="lg:container mx-auto px-2 my-3 relative">
-        <Switch>
-          <Route path="/" exact>
-            <Home />
-          </Route>
-          <Route path="/explore" exact>
-            <Explore />
-          </Route>
-          <Route path="/:productShortName/:productId" exact>
-            <Product />
-          </Route>
-          <Route path="/signup" exact>
-            <Signup />
-          </Route>
-          <Route path="/login" exact>
-            <Login />
-          </Route>
-          <Route path="/cart" exact>
-            <Cart />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
-      </main>
-      <Footer />
-    </Router>
+    <AuthContext.Provider value={{
+      isLoggedIn, login, logout
+    }}>
+      <Router>
+        <Header />
+        <main className="lg:container mx-auto px-2 my-3 relative">
+          {routes}
+        </main>
+        <Footer />
+      </Router>
+    </AuthContext.Provider>
   );
 }
 

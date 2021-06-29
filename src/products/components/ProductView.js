@@ -192,7 +192,7 @@ const ProductView = props => {
             <Info color="yellow">
               You purchased this item on <span className="font-semibold">Jun 14</span>
             </Info>
-            <Form initialFormInputs={inputs} />
+            <Form initialFormInputs={inputs} onSubmit={() => console.log('submit')} />
          </> :
           <p>No reviews! Why don't you write one?</p>}
           

@@ -10,18 +10,20 @@ const Button = props => {
 
   if (props.to) {
     return (
-      <Link to={props.to} 
-            className={newClass}>
-        {props.children}
+      <Link
+        to={props.to} 
+        className={newClass}>
+          {props.children}
       </Link>
     );
   }
 
   return (
-    <button className={newClass}
-            onClick={props.onClick}
-            disabled={props.disabled}>        
-      {props.children}
+    <button 
+      className={newClass}
+      onClick={props.onClick}
+      disabled={props.disabled}>
+        {props.children}
     </button>
   );
 }

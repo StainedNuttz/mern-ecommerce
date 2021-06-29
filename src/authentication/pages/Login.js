@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import { VALIDATE_REQUIRED, VALIDATE_EMAIL, VALIDATE_MAX } from '../../shared/utils/validations';
 
 import Form from '../../shared/components/Forms/Form';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const Login = () => {
+  const auth = useContext(AuthContext);
+
   const initialFormState = {
     isValid: false
   }
@@ -32,7 +35,7 @@ const Login = () => {
     }
   ]
 
-  return <Form initialFormInputs={inputs} initialFormState={initialFormState} />
+  return <Form onSubmit={auth.login} btnText="Login" initialFormInputs={inputs} initialFormState={initialFormState} />
 }
 
 export default Login;

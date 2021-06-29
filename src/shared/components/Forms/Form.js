@@ -6,7 +6,7 @@ import Button from '../UI/Button';
 import Input from './Input';
 
 const Form = props => {
-  const [formState, changeHandler, submitHandler] = useForm(props.initialFormInputs, props.initialFormState);
+  const [formState, changeHandler, submitHandler] = useForm(props.initialFormInputs, props.initialFormState, props.onSubmit);
 
   return (
     <form className="space-y-2" autoComplete="off">
@@ -33,11 +33,11 @@ const Form = props => {
               }}
               formState={formState}
             />
-          );  
+          );
         })
       }
       <div className="mt-1 md:mt-2">
-        <Button onClick={submitHandler} className="p-2 px-3">Submit</Button>
+        <Button onClick={submitHandler} className="p-2 px-3">{props.btnText || 'Submit'}</Button>
         {formState.submittedSuccess && <p className="text-green-500 font-bold mt-2">SUCCESS</p>}
       </div>
     </form>

@@ -7,9 +7,9 @@ const NavLeft = props => {
   return (
     <Navigation className="space-x-6 text-lg" onClick={props.onClick} links={
       [
-        { text: <Logo className="no-underline" />, link: '/', nounderline: true},
-        { text: 'Featured', link: '/' },
-        { text: 'Explore', link: '/explore' },
+        { auth: null, text: <Logo className="no-underline" />, link: '/', nounderline: true},
+        { auth: null, text: 'Featured', link: '/' },
+        { auth: null, text: 'Explore', link: '/explore' },
       ]
     } />
   );
