@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom'
 
 const NavigationLink = props => {
-  console.log(props.onClick)
   return (
     <li className="list-none">
       {props.link && 

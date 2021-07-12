@@ -1,77 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { useHttp } from '../../shared/hooks/useHttp';
+
 import ProductView from '../components/ProductView';
-
-import image from '../../home/pages/iphone12.jpeg';
-import image2 from '../../home/pages/chainsaw.jpg';
-import image3 from '../../home/pages/shoe.jpg';
-import image4 from '../../home/pages/beer.jpg';
-
-const DUMMY = [
-  undefined,
-  {
-    id: '1',
-    brand: 'Apple Inc.',
-    name: 'iPhone 13 SE, 256GB',
-    image: image,
-    price: '£599.00',
-    stock: 0,
-    reviews: 968,
-    rating: 4.5
-  },
-  {
-    id: '2',
-    brand: 'RYOBI',
-    name: 'RYOBI Chainsaw Ultra X',
-    image: image2,
-    price: '£149.99',
-    stock: 32,
-    reviews: 342,
-    rating: 4.5
-  },
-  {
-    id: '3',
-    brand: 'Birkenstock',
-    name: 'Birkenstock Arizona Birko Flor Navy Sandals',
-    image: image3,
-    price: '£52.17',
-    stock: 12,
-    reviews: 29,
-    rating: 5
-  },
-  {
-    id: '4',
-    brand: 'Paulaner',
-    name: 'Paulaner Hefe-Weizen Natural Wheat Beer, 500 ml',
-    image: image4,
-    price: '£2.60',
-    stock: 832,
-    reviews: 179,
-    rating: 5
-  },
-];
+import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 
 const Product = () => {
   const id = useParams().productId;
-  const found = !(typeof DUMMY[id] === 'undefined');
-  // // const short = useParams().productShortName;
-  // // use the id to fetch the product data from backend!
-  // // if no product exists, error!
-  // // const found = (parseInt(id) < 5) ? true : false;
-  // // const {name, price, image, ...rest} = DUMMY[id];
-  // let found = false;
-  // if (id > 0 && id < 5) { found = true }
+  const [isLoading, error, sendRequest] = useHttp();
+  const [foundProduct, setFoundProduct] = useState(null);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await sendRequest(
+          `/api/products/${id}`,
+        );
+        setFoundProduct(res);
+      } catch (err) {}
+    }
+    getProduct();
+  }, [sendRequest]);
+
+  console.log('RE RENDER')
+  console.log(foundProduct)
 
   return (
-    <div className="text-center text-xl"> 
-      { !found && (
-        <React.Fragment>
-          <div>Product not found!</div> 
+    <div className="text-center text-xl flex flex-col items-center">
+      {isLoading && <LoadingSpinner />}
+      {!isLoading && foundProduct && <ProductView product={foundProduct} />}
+      {!isLoading && foundProduct === null &&
+        <>
+          <div>Product not found!</div>
           <Link to="/" className="text-blue-700 hover:text-blue-400 ">Go back</Link>
-        </React.Fragment>
-      ) }
-      { found && <ProductView product={DUMMY[id]} /> }
+        </>
+      }
     </div>
   );
 }

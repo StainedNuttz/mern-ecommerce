@@ -14,9 +14,10 @@ const ProductListItem = props => {
   } else {
     stock = <span className="text-red-600">Out of stock</span>
   }
-
-  let short = props.name.split(/[\s,]+/).join('-').toLowerCase();
-  let link = `${short}/${props.id}`;
+  
+  // let short = props.name.split(/[\s,]+/).join('-').toLowerCase();
+  // let link = `${short}/${props.id}`;
+  let link = `p/${props.id}`;
 
   const [alertAlive, showAlert, hideAlert] = useAlert(5);
 
@@ -39,7 +40,7 @@ const ProductListItem = props => {
           <h3 className="text-2xl font-semibold text-gray-900">{props.price}</h3>
           {stock}
           <Button disabled={props.stock === 0} className="mt-2 p-2" onClick={showAlert}>Add to cart</Button>
-          <Alert id={short} close={hideAlert} show={alertAlive}>Added {props.name} to cart!</Alert>
+          <Alert id={props.id} close={hideAlert} show={alertAlive}>Added {props.name} to cart!</Alert>
         </div>
       </div>
     </Card>

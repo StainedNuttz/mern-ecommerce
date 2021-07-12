@@ -19,7 +19,7 @@ export const validate = (value, validityRules) => {
       case VALIDATE_MAX:
         valids[validator] = value.length <= (validityRules[validator].params || 16);
         break;
-      case VALIDATE_MIN:
+        case VALIDATE_MIN:
         valids[validator] = value.length >= (validityRules[validator].params || 16);
         break;
       default:

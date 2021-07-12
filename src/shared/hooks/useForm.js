@@ -18,14 +18,11 @@ const formReducer = (state, action) => {
 
       // check validity of all other inputs and determine main form validity
       if (inputIsValid) {
-        console.log(action.id)
         for (let i in state.inputs) {
           if (i === action.id) continue;
           formIsValid = formIsValid && state.inputs[i].isValid;
         }
       } else { formIsValid = false }
-
-      console.log(action.id, inputIsValid)
       
       return {
         ...state,
@@ -45,6 +42,8 @@ const formReducer = (state, action) => {
     case 'SUBMIT':
       // IF FORM IS VALID
       if (state.isValid) {
+        action.onSubmit(action.event);
+
         const resetInputs = {
           ...state.inputs
         }
@@ -57,9 +56,6 @@ const formReducer = (state, action) => {
             validity: validate('', state.inputs[i].validityRules)
           }
         }
-
-        // form onSubmit
-        action.onSubmit();
         
         return {
           inputs: resetInputs,
@@ -101,7 +97,7 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
   const initialFormValues = {
     submitted: false,
     submittedSuccess: false,
-    isValid: initialFormState && initialFormState.isValid || false,
+    isValid: initialFormState.isValid || false,
     inputs
   }
 
@@ -111,8 +107,9 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
     e.preventDefault();
     dispatch({
       type: 'SUBMIT',
-      onSubmit
-    })
+      onSubmit,
+      event: e
+    });
   }
 
   const changeHandler = (id, value) => {

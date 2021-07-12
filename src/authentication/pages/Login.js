@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
 
+import { useForm } from '../../shared/hooks/useForm';
+import { useHttp } from '../../shared/hooks/useHttp';
+
 import { VALIDATE_REQUIRED, VALIDATE_EMAIL, VALIDATE_MAX } from '../../shared/utils/validations';
 
 import Form from '../../shared/components/Forms/Form';
@@ -7,11 +10,7 @@ import { AuthContext } from '../../shared/context/auth-context';
 
 const Login = () => {
   const auth = useContext(AuthContext);
-
-  const initialFormState = {
-    isValid: false
-  }
-
+  
   const inputs = [
     {
       id: 'email',
@@ -34,8 +33,45 @@ const Login = () => {
       }
     }
   ]
+  
+  const [isLoading, error, sendRequest] = useHttp();
+  
+  const loginHandler = async e => {
+    e.preventDefault();
+    
+    try {
+      const res = await sendRequest(
+        '/api/login',
+        'POST',
+        JSON.stringify({
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value
+        }),
+        { 'Content-Type': 'application/json' }
+      );
+      auth.login();
+      if (res.isAdmin) { auth.setIsAdmin(true) }
+    } catch (err) {}
+  }
 
-  return <Form onSubmit={auth.login} btnText="Login" initialFormInputs={inputs} initialFormState={initialFormState} />
+  const [formState, changeHandler, submitHandler] = useForm(inputs, { isValid: false }, loginHandler);
+
+  return (
+    <div className="flex justify-center">
+      <Form
+        className="w-[32rem]"
+        btnText="Login"
+        isLoading={isLoading}
+        error={error}
+        formState={formState}
+        submitHandler={submitHandler}
+        changeHandler={changeHandler}
+        inputs={inputs}
+      >
+        <h2 className="text-3xl font-light mb-4">Log into your account</h2>
+      </Form>
+    </div>
+  );
 }
 
 export default Login;

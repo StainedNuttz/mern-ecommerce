@@ -15,6 +15,7 @@ import { AuthContext } from './shared/context/auth-context';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const login = useCallback(() => {
     setIsLoggedIn(true);
@@ -22,6 +23,7 @@ function App() {
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setIsAdmin(false);
   }, []);
 
   // define routes
@@ -36,11 +38,11 @@ function App() {
         <Route path="/explore" exact>
           <Explore />
         </Route>
-        <Route path="/:productShortName/:productId" exact>
-          <Product />
-        </Route>
         <Route path="/cart" exact>
           <Cart />
+        </Route>
+        <Route path="/p/:productId" exact>
+          <Product />
         </Route>
         <Redirect to="/" />
       </Switch>
@@ -54,9 +56,6 @@ function App() {
         <Route path="/explore" exact>
           <Explore />
         </Route>
-        <Route path="/:productShortName/:productId" exact>
-          <Product />
-        </Route>
         <Route path="/cart" exact>
           <Cart />
         </Route>
@@ -66,6 +65,9 @@ function App() {
         <Route path="/login" exact>
           <Login />
         </Route>
+        <Route path="/p/:productId" exact>
+          <Product />
+        </Route>
         <Redirect to="/" />
       </Switch>
     );
@@ -73,7 +75,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{
-      isLoggedIn, login, logout
+      isLoggedIn, isAdmin, setIsAdmin, login, logout
     }}>
       <Router>
         <Header />

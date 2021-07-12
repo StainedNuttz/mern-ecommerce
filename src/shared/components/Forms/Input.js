@@ -37,7 +37,8 @@ const Input = props => {
   if (formState.submitted && !formStateInput.isValid) {
     border += borders.red;
   } else if (formState.submittedSuccess) {
-    border += borders.green;
+    // border += borders.green;
+    border += borders.default;
   } else {
     border += borders.default;
   }
@@ -48,6 +49,7 @@ const Input = props => {
     case 'textarea':
       content = <textarea
         id={id}
+        disabled={props.disabled}
         className={border}
         placeholder={placeholder}
         onBlur={() => setBeenTouched(true)}
@@ -58,6 +60,7 @@ const Input = props => {
     default:
       content = <input
         id={id}
+        disabled={props.disabled}
         type={type}
         className={border}
         placeholder={placeholder}
@@ -71,7 +74,7 @@ const Input = props => {
     <div>
       {content}
       {errors}
-      {formState.submittedSuccess && <p className="text-sm mt-1 text-green-600">{successText}</p>}
+      {/* {formState.submittedSuccess && <p className="text-sm mt-1 text-green-600">{successText}</p>} */}
     </div>
   );
 }

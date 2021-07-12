@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductList from '../../products/components/ProductList';
+
+import { useHttp } from '../../shared/hooks/useHttp';
 
 import image from '../../home/pages/iphone12.jpeg';
 import image2 from '../../home/pages/chainsaw.jpg';
 import image3 from '../../home/pages/shoe.jpg';
 import image4 from '../../home/pages/beer.jpg';
+import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 
 const Home = props => {
   const PRODUCTS = [
@@ -50,8 +53,28 @@ const Home = props => {
     },
   ];
 
+  const [isLoading, error, sendRequest] = useHttp();
+  const [products, setProducts] = useState(null);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await sendRequest(
+          '/api/products',
+          'GET'
+        );
+        setProducts(res.products);
+      } catch (err) {}
+    }
+    getProducts();
+  }, [sendRequest]);
+
   return (
-    <ProductList products={PRODUCTS} />
+    <>
+      {isLoading && <div className="flex justify-center"><LoadingSpinner /></div>}
+      {!isLoading && !products && <h2>No products found</h2>}
+      {!isLoading && products && <ProductList products={products} />}
+    </>
   );
 }
 
