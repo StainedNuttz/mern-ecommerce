@@ -111,9 +111,7 @@ const ProductView = props => {
         }),
         {'Content-Type': 'application/json' }
       );
-    } catch (err) {
-
-    }
+    } catch (err) {}
   }
 
   const [formState, changeHandler, submitHandler] = 

@@ -9,36 +9,38 @@ const Form = props => {
   const { formState, changeHandler, submitHandler } = props;
 
   return (
-    <form className={`${props.className} space-y-2`} autoComplete="off">
+    <form className={props.className} autoComplete="off">
       {props.children}
       {props.isLoading && <div className="flex justify-center"><LoadingSpinner /></div>}
-      {props.inputs.map(input => {
-          const validityRules = input.data.validityRules;
-          for (let r in validityRules) {
-            if (typeof(validityRules[r]) === 'string') {
-              const errorMsg = validityRules[r];
-              validityRules[r] = {};
-              validityRules[r].errorMsg = errorMsg;
+      <div className="space-y-2">
+        {props.inputs.map(input => {
+            const validityRules = input.data.validityRules;
+            for (let r in validityRules) {
+              if (typeof(validityRules[r]) === 'string') {
+                const errorMsg = validityRules[r];
+                validityRules[r] = {};
+                validityRules[r].errorMsg = errorMsg;
+              }
             }
-          }
-
-          return (
-            <Input
-              id={input.id}
-              disabled={props.isLoading}
-              type={input.data.type}
-              placeholder={input.data.placeholder}
-              validityRules={validityRules}
-              successText={input.data.successText}
-              onChange={e => {
-                e.preventDefault();
-                changeHandler(input.id, e.target.value);
-              }}
-              formState={formState}
-            />
-          );
-        })
-      }
+  
+            return (
+              <Input
+                id={input.id}
+                disabled={props.isLoading}
+                type={input.data.type}
+                placeholder={input.data.placeholder}
+                validityRules={validityRules}
+                successText={input.data.successText}
+                onChange={e => {
+                  e.preventDefault();
+                  changeHandler(input.id, e.target.value);
+                }}
+                formState={formState}
+              />
+            );
+          })
+        }
+      </div>
       <div className="mt-1 md:mt-2 flex items-center">
         <Button
           onClick={submitHandler}

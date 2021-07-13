@@ -10,12 +10,13 @@ import Login from './authentication/pages/Login';
 import Explore from './explore/pages/Explore';
 import Cart from './cart/pages/Cart';
 import Product from './products/pages/Product';
+import Admin from './authentication/pages/Admin';
 
 import { AuthContext } from './shared/context/auth-context';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   const login = useCallback(() => {
     setIsLoggedIn(true);
@@ -41,6 +42,13 @@ function App() {
         <Route path="/cart" exact>
           <Cart />
         </Route>
+      
+        { isAdmin &&
+          <Route path="/admin" exact>
+            <Admin />
+          </Route>
+        }
+
         <Route path="/p/:productId" exact>
           <Product />
         </Route>
@@ -65,6 +73,13 @@ function App() {
         <Route path="/login" exact>
           <Login />
         </Route>
+
+        {isAdmin &&
+          <Route path="/admin" exact>
+            <Admin />
+          </Route>
+        }
+
         <Route path="/p/:productId" exact>
           <Product />
         </Route>

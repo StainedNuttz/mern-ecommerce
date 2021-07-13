@@ -50,6 +50,7 @@ const Login = () => {
         { 'Content-Type': 'application/json' }
       );
       auth.login();
+      console.log(auth.isAdmin)
       if (res.isAdmin) { auth.setIsAdmin(true) }
     } catch (err) {}
   }

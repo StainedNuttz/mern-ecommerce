@@ -11,7 +11,7 @@ const NavRight = props => {
   return (
     <Navigation className="space-x-6 text-lg" onClick={props.onClick} links={
       [
-        { auth: true, admin: true, text: 'Admin', link: '/admin' },
+        { admin: true, text: 'Admin', link: '/admin' },
         { auth: false, text: 'Sign up', link: '/signup' },
         { auth: false, text: 'Log in', link: '/login' },
         { auth: true, text: 'Logout', onClick: auth.logout },
