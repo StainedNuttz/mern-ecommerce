@@ -51,15 +51,19 @@ router.post('/new',
 
 router.patch('/:pid',
   [
-    check('name')
-      .not()
-      .isEmpty(),
-    check('brand')
-      .not()
-      .isEmpty(),
-    check('price')
-      .isDecimal({ force_decimal: false, decimal_digits: 2, locale: 'en-GB' }),
+    // check('name')
+    //   .exists()
+    //   .not()
+    //   .isEmpty(),
+    // check('brand')
+    //   .exists()
+    //   .not()
+    //   .isEmpty(),
+    // check('price')
+    //   .exists()
+    //   .isDecimal({ force_decimal: false, decimal_digits: 2, locale: 'en-GB' }),
     check('stock')
+      .exists()
       .isNumeric()
   ],
   productControllers.editProduct

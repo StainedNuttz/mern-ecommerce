@@ -8,13 +8,12 @@ import Splitter from '../../shared/components/UI/Splitter';
 import Card from '../../shared/components/UI/Card';
 import Button from '../../shared/components/UI/Button';
 import Info from '../../shared/components/UI/Info';
+
 import ReviewList from './ReviewList';
 import ProductViewSection from './ProductViewSection';
-import Pagination from './Pagination';
+import ProductViewReview from './ProductViewReview';
 
 import { AuthContext } from '../../shared/context/auth-context';
-
-import { VALIDATE_MIN, VALIDATE_MAX, VALIDATE_REQUIRED } from '../../shared/utils/validations';
 
 import image4 from '../../home/pages/beer.jpg';
 import paypal from '@iconify-icons/logos/paypal';
@@ -26,6 +25,7 @@ import { TruckIcon } from '@heroicons/react/solid';
 import { CashIcon } from '@heroicons/react/solid';
 import { useHttp } from '../../shared/hooks/useHttp';
 import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
+import ProductViewDelete from './ProductViewDelete';
 
 const general = {
   "desc": <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.<br /><br />Deserunt at id accusantium neque quo, quam maiores eius molestias cumque laboriosam corrupti eos nisi fugiat quia. Laudantium sapiente eos commodi cupiditate. Sint libero iure quia modi, commodi ratione tempore quod aliquid distinctio ipsam. Ad autem repudiandae asperiores non facere, odit inventore adipisci, velit saepe voluptatibus cum!<br /><br /> Hic autem vitae suscipit reprehenderit reiciendis. Rerum, magnam commodi porro error dignissimos nam quos explicabo aliquid ipsam asperiores voluptatum exercitationem magni eos dolor sed.</p>,
@@ -72,85 +72,13 @@ const ProductView = props => {
     writeReviewRef.current.scrollIntoView({behavior: 'smooth'});
   }
 
-  const inputs = [
-    {
-      id: 'review-title',
-      data: {
-        type: 'text',
-        placeholder: 'Title',
-        validityRules: {
-          [VALIDATE_REQUIRED]: 'A title is required',
-          [VALIDATE_MAX]: 'Your title must contain no more than 30 characters'
-        }
-      }
-    },
-    {
-      id: 'review-text',
-      data: {
-        type: 'textarea',
-        placeholder: 'Write a review',
-        validityRules: {
-          [VALIDATE_REQUIRED]: 'Please enter in a review before submitting',
-          [VALIDATE_MIN]: { errorMsg: 'Your review must contain at least 5 characters', params: 5 },
-          [VALIDATE_MAX]: { errorMsg: 'Your review must contain less than 300 characters', params: 300 }
-        }
-      }
-    }
-  ]
-
   const id = useParams().productId;
 
-  const [reviewIsLoading, reviewError, reviewSuccess, sendReviewRequest] = useHttp();
-  const submitReviewHandler = async () => {
-    try {
-      await sendReviewRequest(
-        `/api/products/${id}/review`,
-        'POST',
-        JSON.stringify({
-          title: reviewFormState.inputs['review-title'].value,
-          text: reviewFormState.inputs['review-text'].value,
-          rating: 5,
-          user: '60e9ec0fd465865da3ead4b6',
-          date: new Date()
-        }),
-        { 'Content-Type': 'application/json' }
-      );
-
-    } catch (err) {
-    }
-  }
-
-  const [deleteIsLoading, deleteError, deleteSuccess, sendDeleteRequest] = useHttp();
-  const deleteHandler = async () => {
-    try {
-      const res = await sendDeleteRequest(
-        `/api/products/${id}`,
-        'DELETE'
-      );
-      history.go(0);
-    } catch (err) {}
-  }
-
-  const [editIsLoading, editSuccess, editError, sendEditRequest] = useHttp();
-  const editHandler = async () => {
-    setShowEditProductForm(true);
-    // try {
-    //   const res = await sendEditRequest(
-    //     `/api/products/${id}`,
-    //     'PATCH',
-    //     {
-
-    //     },
-    //     { 'Content-Type': 'application/json' }
-    //   );
-    // } catch (err) {}
-  }
-
-  const [reviewFormState, reviewChangeHandler, reviewSubmitHandler] =
-  useForm(inputs, { isValid: false }, submitReviewHandler);
+  // todo: SIMPLIFY INTO COMPONENTS
+  // * editProduct + form
 
   const [editProductFormState, editProductChangeHandler, editProductSubmitHandler] =
-  useForm(inputs, { isValid: false }, editHandler);
+  useForm([], { isValid: false }, editHandler);
   const [showEditProductForm, setShowEditProductForm] = useState(false);
 
   return (
@@ -179,17 +107,16 @@ const ProductView = props => {
             <Button disabled={stock === 0} className="p-2 px-6">Add to cart</Button>
             {auth.isAdmin && 
               <>
-                <Button onClick={editHandler} secondary className="p-2 px-6">Edit product</Button>
+                {/* <Button onClick={editHandler} secondary className="p-2 px-6">Edit product</Button>
                 {showEditProductForm && 
                   <Form
 
                   />
-                }
+                } */}
 
-                <Button onClick={deleteHandler} danger className="p-2 px-6">Delete product</Button>
-                {deleteIsLoading && <LoadingSpinner />}
-                {deleteError && <p className="text-red-500">{deleteError}</p>}
-                {deleteSuccess && <p className="text-green-500">{deleteSuccess}</p>}
+                <ProductViewDelete
+                  productId={id}
+                />
               </>
             }
           </div>
@@ -220,23 +147,10 @@ const ProductView = props => {
       </Card>
 
       {/* WRITE REVIEW */}
-      <Card ref={writeReviewRef} className="p-3 md:col-span-2 text-left">
-         <>
-            <Info color="yellow">
-              You purchased this item on <span className="font-semibold">Jun 14</span>
-            </Info>
-            <Form
-              className="relative"
-              btnText="Submit"
-              isLoading={reviewIsLoading}
-              error={reviewError}
-              formState={reviewFormState}
-              submitHandler={reviewSubmitHandler}
-              changeHandler={reviewChangeHandler}
-              inputs={inputs}
-            />
-          </>
-      </Card>
+      <ProductViewReview
+        productId={id}
+        ref={writeReviewRef}
+      />
 
       {/* REVIEWS */}
       {/* hooking this up is simple */}

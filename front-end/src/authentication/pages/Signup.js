@@ -48,7 +48,7 @@ const Signup = () => {
     }
   ]
 
-  const signupHandler = async () => {    
+  const signupHandler = async () => { 
     try {
       await sendRequest(
         '/api/signup',
