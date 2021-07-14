@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { VALIDATE_REQUIRED } from '../../shared/utils/validations';
 
@@ -52,6 +52,7 @@ const Admin = () => {
   ]
 
   const [isLoading, error, sendRequest] = useHttp();
+  const [success, setSuccess] = useState(null);
 
   const createProductHandler = async () => {
     try {
@@ -66,20 +67,24 @@ const Admin = () => {
         }),
         { 'Content-Type': 'application/json' }
       );
-    } catch (err) {}
+      setSuccess('Product created');
+      resetValues();
+    } catch (err) {
+    }
   }
 
-  const [formState, changeHandler, submitHandler] = useForm(inputs, { isValid: false }, createProductHandler);
+  const [formState, changeHandler, submitHandler, resetValues] = useForm(inputs, { isValid: false }, createProductHandler);
 
   return (
     <>
       <h2 className="text-4xl font-bold mb-5">Admin Dashboard</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+      <div className="">
         <Form
           className="relative"
           btnText="Create"
           isLoading={isLoading}
           error={error}
+          success={success}
           formState={formState}
           submitHandler={submitHandler}
           changeHandler={changeHandler}

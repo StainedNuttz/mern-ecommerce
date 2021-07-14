@@ -109,14 +109,13 @@ const deleteProduct = async (req, res, next) => {
     if (!product) return next(new HttpError(500, `No product by that ID found`));
   }
 
-
   try {
     await Product.findByIdAndDelete(req.params.pid).exec();
   } catch (err) {
     return next(new HttpError(500, 'Failed to delete product from database'));
   }
 
-  res.status(418).json({ message: 'Product deleted' });
+  res.status(200).json({ message: 'Product deleted' });
 }
 
 const deleteAllProducts = async (req, res, next) => {

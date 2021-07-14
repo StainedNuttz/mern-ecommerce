@@ -36,9 +36,7 @@ const Login = () => {
   
   const [isLoading, error, sendRequest] = useHttp();
   
-  const loginHandler = async e => {
-    e.preventDefault();
-    
+  const loginHandler = async () => {    
     try {
       const res = await sendRequest(
         '/api/login',
@@ -50,12 +48,14 @@ const Login = () => {
         { 'Content-Type': 'application/json' }
       );
       auth.login();
-      console.log(auth.isAdmin)
       if (res.isAdmin) { auth.setIsAdmin(true) }
-    } catch (err) {}
+      resetValues();
+    } catch (err) {
+      resetValues(['password']);
+    }
   }
 
-  const [formState, changeHandler, submitHandler] = useForm(inputs, { isValid: false }, loginHandler);
+  const [formState, changeHandler, submitHandler, resetValues] = useForm(inputs, { isValid: false }, loginHandler);
 
   return (
     <div className="flex justify-center">

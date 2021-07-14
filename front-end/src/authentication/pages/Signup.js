@@ -48,9 +48,7 @@ const Signup = () => {
     }
   ]
 
-  const signupHandler = async e => {
-    e.preventDefault();
-    
+  const signupHandler = async () => {    
     try {
       await sendRequest(
         '/api/signup',

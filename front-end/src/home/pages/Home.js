@@ -53,7 +53,7 @@ const Home = props => {
     },
   ];
 
-  const [isLoading, error, sendRequest] = useHttp();
+  const [isLoading, error, success, sendRequest] = useHttp();
   const [products, setProducts] = useState(null);
 
   useEffect(() => {

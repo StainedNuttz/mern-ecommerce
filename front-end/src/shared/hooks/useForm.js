@@ -42,27 +42,9 @@ const formReducer = (state, action) => {
     case 'SUBMIT':
       // IF FORM IS VALID
       if (state.isValid) {
-        action.onSubmit(action.event);
-
-        const resetInputs = {
-          ...state.inputs
-        }
-
-        for (let i in state.inputs) {
-          resetInputs[i] = {
-            ...state.inputs[i],
-            value: '',
-            isValid: false,
-            validity: validate('', state.inputs[i].validityRules)
-          }
-        }
+        action.onSubmit();
+        return state;
         
-        return {
-          inputs: resetInputs,
-          submitted: false,
-          isValid: false,
-          submittedSuccess: true,
-        }
       // IF FORM IS ALREADY SUCCESSFUL
       } else if (state.submittedSuccess) {
         return {
@@ -77,9 +59,34 @@ const formReducer = (state, action) => {
           submitted: true,
         }
       }
+
+    case 'RESET':
+      const resetInputs = {
+        ...state.inputs
+      }
+
+      let inputsToReset;
+      // if NOT passed in as arg, we will just clear all inputs instead
+      inputsToReset = action.inputsToReset || Object.keys(state.inputs);
+      
+      inputsToReset.forEach(i => {
+        resetInputs[i] = {
+          ...resetInputs,
+          value: '',
+          isValid: false,
+          validity: validate('', resetInputs[i].validityRules)
+        }
+      });
+
+      return {
+        inputs: resetInputs,
+        submitted: false,
+        isValid: false,
+        submittedSuccess: true,
+      }
   }
 }
-
+ 
 // custom hook to deal with form state
 export const useForm = (initialInputs, initialFormState, onSubmit) => {  
   let inputs = {}
@@ -104,11 +111,11 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
   const [formState, dispatch] = useReducer(formReducer, initialFormValues);
 
   const submitHandler = e => {
+    console.log('LOOOL')
     e.preventDefault();
     dispatch({
       type: 'SUBMIT',
-      onSubmit,
-      event: e
+      onSubmit
     });
   }
 
@@ -120,5 +127,12 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
     });
   }
 
-  return [formState, changeHandler, submitHandler];
+  const resetValues = inputsToReset => {
+    dispatch({
+      type: 'RESET',
+      inputsToReset
+    });
+  }
+
+  return [formState, changeHandler, submitHandler, resetValues];
 }

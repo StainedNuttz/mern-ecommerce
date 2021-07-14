@@ -11,7 +11,7 @@ const Form = props => {
   return (
     <form className={props.className} autoComplete="off">
       {props.children}
-      {props.isLoading && <div className="flex justify-center"><LoadingSpinner /></div>}
+      {props.isLoading && <div className="my-2 flex justify-center"><LoadingSpinner /></div>}
       <div className="space-y-2">
         {props.inputs.map(input => {
             const validityRules = input.data.validityRules;
@@ -47,6 +47,7 @@ const Form = props => {
           className="p-2 px-3">
             {props.btnText || 'Submit'}
         </Button>
+        {props.success && formState.submittedSuccess && <p className="text-green-500 font-bold ml-3">{props.success}</p>}
         {props.error && <p className="text-red-500 font-bold ml-3">{props.error}</p>}
       </div>
     </form>

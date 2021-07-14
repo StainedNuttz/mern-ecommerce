@@ -14,9 +14,7 @@ const Input = props => {
 
   // this input's data and parent form's state
   const { id, type, placeholder, validityRules, successText, onChange, formState } = props;
-  useEffect(() => {
-    console.log(formState)
-  }, [formState]);
+
   // formState contains info about actual validation, this input only stores the error message assigned to each possible error
   const formStateInput = formState.inputs[id];
   const validityState = formStateInput.validity;

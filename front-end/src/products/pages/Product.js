@@ -8,7 +8,7 @@ import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 
 const Product = () => {
   const id = useParams().productId;
-  const [isLoading, error, sendRequest] = useHttp();
+  const [isLoading, error, success, sendRequest] = useHttp();
   const [foundProduct, setFoundProduct] = useState(null);
 
   useEffect(() => {
@@ -22,9 +22,6 @@ const Product = () => {
     }
     getProduct();
   }, [sendRequest]);
-
-  console.log('RE RENDER')
-  console.log(foundProduct)
 
   return (
     <div className="text-center text-xl flex flex-col items-center">

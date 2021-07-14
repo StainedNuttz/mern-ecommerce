@@ -5,6 +5,7 @@ const URL = 'http://192.168.1.128:5000';
 export const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const currentHttpRequests = useRef([]);
 
@@ -29,6 +30,7 @@ export const useHttp = () => {
   
       if (response.ok) {
         setIsLoading(false);
+        setSuccess(responseData.message);
         return responseData;
       } else {
         throw new Error(responseData.message);
@@ -48,5 +50,5 @@ export const useHttp = () => {
     }
   }, [])
 
-  return [isLoading, error, sendRequest];
+  return [isLoading, error, success, sendRequest];
 }
