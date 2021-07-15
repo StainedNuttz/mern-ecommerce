@@ -7,7 +7,6 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 
 const Form = props => {
   const { formState, changeHandler, submitHandler } = props;
-
   return (
     <form className={props.className} autoComplete="off">
       {props.children}
@@ -47,8 +46,8 @@ const Form = props => {
           className="p-2 px-3">
             {props.btnText || 'Submit'}
         </Button>
-        {props.success && formState.submittedSuccess && <p className="text-green-500 font-bold ml-3">{props.success}</p>}
-        {props.error && <p className="text-red-500 font-bold ml-3">{props.error}</p>}
+        {props.success && formState.submittedSuccess && <p className="text-green-500 font-bold text-base ml-3">{props.success}</p>}
+        {props.error && <p className="text-red-500 text-base ml-3">{props.error}</p>}
       </div>
     </form>
   );

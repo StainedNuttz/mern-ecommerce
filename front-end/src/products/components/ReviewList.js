@@ -3,7 +3,6 @@ import React from 'react';
 import ReviewListItem from './ReviewListItem';
 
 const ReviewList = props => {
-  console.log(props.reviews)
   if (props.reviews.length === 0) {
     return <div>No reviews</div>
   } else {

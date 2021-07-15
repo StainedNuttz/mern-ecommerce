@@ -1,17 +1,15 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
-
-import Form from '../../shared/components/Forms/Form';
-import { useForm } from '../../shared/hooks/useForm';
+import { Link, useParams } from 'react-router-dom';
 
 import Splitter from '../../shared/components/UI/Splitter';
 import Card from '../../shared/components/UI/Card';
 import Button from '../../shared/components/UI/Button';
-import Info from '../../shared/components/UI/Info';
 
 import ReviewList from './ReviewList';
 import ProductViewSection from './ProductViewSection';
 import ProductViewReview from './ProductViewReview';
+import ProductViewDelete from './ProductViewDelete';
+import ProductViewEdit from './ProductViewEdit';
 
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -23,9 +21,6 @@ import applePay from '@iconify-icons/logos/apple-pay';
 import { Icon } from '@iconify/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import { CashIcon } from '@heroicons/react/solid';
-import { useHttp } from '../../shared/hooks/useHttp';
-import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
-import ProductViewDelete from './ProductViewDelete';
 
 const general = {
   "desc": <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.<br /><br />Deserunt at id accusantium neque quo, quam maiores eius molestias cumque laboriosam corrupti eos nisi fugiat quia. Laudantium sapiente eos commodi cupiditate. Sint libero iure quia modi, commodi ratione tempore quod aliquid distinctio ipsam. Ad autem repudiandae asperiores non facere, odit inventore adipisci, velit saepe voluptatibus cum!<br /><br /> Hic autem vitae suscipit reprehenderit reiciendis. Rerum, magnam commodi porro error dignissimos nam quos explicabo aliquid ipsam asperiores voluptatum exercitationem magni eos dolor sed.</p>,
@@ -37,10 +32,8 @@ const general = {
 
 const ProductView = props => {
   const auth = useContext(AuthContext);
-  const history = useHistory();
 
   const { name, image, brand, price, stock, reviews, rating } = props.product;
-  console.log('wtf', reviews)
   
   const paginationRef = useRef(null);
   const reviewsRef = useRef(null);
@@ -77,10 +70,6 @@ const ProductView = props => {
   // todo: SIMPLIFY INTO COMPONENTS
   // * editProduct + form
 
-  const [editProductFormState, editProductChangeHandler, editProductSubmitHandler] =
-  useForm([], { isValid: false }, editHandler);
-  const [showEditProductForm, setShowEditProductForm] = useState(false);
-
   return (
     <div className="grid md:grid-cols-3 px-1 gap-2">
       {/* PRODUCT */}
@@ -98,37 +87,38 @@ const ProductView = props => {
 
       {/* INFO */}
       <Card className="text-left p-5 md:row-span-5 md:mb-4">
-        <div className="grid">
-          <div className="">
-            <p className="text-3xl font-semibold">{`£${price.toFixed(2)}`}</p>
-            <div className="text-base font-normal">{_stock}</div>
-          </div>
-          <div className="flex flex-col space-y-2 my-3">
-            <Button disabled={stock === 0} className="p-2 px-6">Add to cart</Button>
-            {auth.isAdmin && 
-              <>
-                {/* <Button onClick={editHandler} secondary className="p-2 px-6">Edit product</Button>
-                {showEditProductForm && 
-                  <Form
+        <div className="grid sm:grid-cols-2">
+          <div className="flex flex-col justify-between">
+            <div>
+              <p className="text-3xl font-semibold">{`£${price.toFixed(2)}`}</p>
+              <div className="text-base font-normal">{_stock}</div>
+            </div>
 
-                  />
-                } */}
+            <div>
+              <div className="flex items-center space-x-2">
+                <TruckIcon className="w-7 text-blue-600" />
+                <p className="text-sm">Delivery by <span className="font-bold ml-0.5 text-green-600">{date}</span></p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CashIcon className="w-7 text-blue-600" />
+                <p className="text-sm">30-day Money Back Guarantee</p>
+              </div>
+            </div>
+
+          </div>
+          <div className="flex flex-col space-y-2 mt-3 sm:mt-0">
+            <Button disabled={stock === 0} className="p-2 px-6">Add to cart</Button>
+            {auth.isAdmin &&
+              <>
+                <ProductViewEdit
+                  productId={id}
+                />
 
                 <ProductViewDelete
                   productId={id}
                 />
               </>
             }
-          </div>
-          <div className="">
-            <div className="flex items-center space-x-2">
-              <TruckIcon className="w-7 text-blue-600" />
-              <p className="text-sm">Delivery by <span className="font-bold ml-0.5 text-green-600">{date}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CashIcon className="w-7 text-blue-600" />
-              <p className="text-sm">30-day Money Back Guarantee</p>
-            </div>
           </div>
         </div>
         <Splitter className="mt-3 mb-4" />

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { VALIDATE_EMAIL, VALIDATE_MAX, VALIDATE_MIN, VALIDATE_REQUIRED } from '../../shared/utils/validations';
 import { useHttp } from '../../shared/hooks/useHttp';

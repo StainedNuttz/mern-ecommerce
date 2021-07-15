@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { useForm } from '../../shared/hooks/useForm';
 import { useHttp } from '../../shared/hooks/useHttp';
 
-import { VALIDATE_REQUIRED, VALIDATE_EMAIL, VALIDATE_MAX } from '../../shared/utils/validations';
+import { VALIDATE_REQUIRED, VALIDATE_EMAIL } from '../../shared/utils/validations';
 
 import Form from '../../shared/components/Forms/Form';
 import { AuthContext } from '../../shared/context/auth-context';

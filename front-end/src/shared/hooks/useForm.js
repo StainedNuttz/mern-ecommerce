@@ -43,7 +43,10 @@ const formReducer = (state, action) => {
       // IF FORM IS VALID
       if (state.isValid) {
         action.onSubmit();
-        return state;
+        return {
+          ...state,
+          submittedSuccess: true
+        }
         
       // IF FORM IS ALREADY SUCCESSFUL
       } else if (state.submittedSuccess) {
@@ -93,11 +96,12 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
 
   // initial values
   initialInputs.forEach(i => {
+    const value = i.data.value || '';
     inputs[i.id] = {
-      value: i.data.value || '',
+      value: value,
       isValid: i.data.isValid || false,
       validityRules: i.data.validityRules || {},
-      validity: validate(i.data.value || '', i.data.validityRules)
+      validity: validate(value, i.data.validityRules)
     }
   });
 
@@ -111,7 +115,6 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
   const [formState, dispatch] = useReducer(formReducer, initialFormValues);
 
   const submitHandler = e => {
-    console.log('LOOOL')
     e.preventDefault();
     dispatch({
       type: 'SUBMIT',
@@ -120,6 +123,7 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
   }
 
   const changeHandler = (id, value) => {
+    value = value.toString();
     dispatch({
       type: 'INPUT_CHANGE',
       id,

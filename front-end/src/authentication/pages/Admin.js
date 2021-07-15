@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { VALIDATE_REQUIRED } from '../../shared/utils/validations';
 
@@ -51,12 +51,11 @@ const Admin = () => {
     }
   ]
 
-  const [isLoading, error, sendRequest] = useHttp();
-  const [success, setSuccess] = useState(null);
+  const [isLoading, error, success, sendReq] = useHttp();
 
   const createProductHandler = async () => {
     try {
-      const res = await sendRequest(
+      await sendReq(
         '/api/products/new',
         'POST',
         JSON.stringify({
@@ -67,10 +66,8 @@ const Admin = () => {
         }),
         { 'Content-Type': 'application/json' }
       );
-      setSuccess('Product created');
       resetValues();
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   const [formState, changeHandler, submitHandler, resetValues] = useForm(inputs, { isValid: false }, createProductHandler);
