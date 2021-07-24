@@ -1,6 +1,7 @@
 {
   "extends": [
-    "plugin:react"
+    // ...
+    "plugin:react-hooks/recommended"
   ],
   "rules": {
     "react/props-types": 0

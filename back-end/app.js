@@ -4,10 +4,11 @@ const mongoose = require('mongoose');
 
 const userRoutes = require('./routes/user-routes');
 const productRoutes = require('./routes/product-routes');
+const checkoutRoutes = require('./routes/checkout-routes');
+
 const HttpError = require('./models/http-error');
 
 const app = express();
-
 
 app.use(express.json());
 
@@ -19,9 +20,10 @@ app.use((req, res, next) => {
 })
 
 app.use('/api', userRoutes);
-
 app.use('/api/products', productRoutes);
+app.use('/api/checkout', checkoutRoutes);
 
+// if no route exists
 app.use((req, res, next) => {
   throw new HttpError(404, 'Route not found');
 });
@@ -37,6 +39,7 @@ app.use((error, req, res, next) => {
     .json({ message: error.message || 'An unknown error has occurred' });
 });
 
+// connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => app.listen(5000))
   .catch(err => console.log(err));

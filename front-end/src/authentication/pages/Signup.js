@@ -10,7 +10,7 @@ import Form from '../../shared/components/Forms/Form';
 const Signup = () => {
   const auth = useContext(AuthContext);
 
-  const [isLoading, error, sendRequest] = useHttp();
+  const [isLoading, error, success, sendRequest] = useHttp();
 
   const inputs = [
     {
@@ -49,6 +49,7 @@ const Signup = () => {
   ]
 
   const signupHandler = async () => { 
+    console.log('hello')
     try {
       await sendRequest(
         '/api/signup',
@@ -61,7 +62,9 @@ const Signup = () => {
         { 'Content-Type': 'application/json' }
       );
       auth.login();
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const [formState, changeHandler, submitHandler] =

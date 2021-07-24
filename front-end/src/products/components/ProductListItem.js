@@ -6,6 +6,7 @@ import { useAlert } from '../../shared/hooks/useAlert';
 import Button from '../../shared/components/UI/Button';
 import Card from '../../shared/components/UI/Card';
 import Alert from '../../shared/components/UI/Alert';
+import AddToCart from './AddToCart';
 
 const ProductListItem = props => {
   let stock;
@@ -18,8 +19,6 @@ const ProductListItem = props => {
   // let short = props.name.split(/[\s,]+/).join('-').toLowerCase();
   // let link = `${short}/${props.id}`;
   let link = `p/${props.id}`;
-
-  const [alertAlive, showAlert, hideAlert] = useAlert(5);
 
   return (
     <Card className="grid grid-cols-5 grid-rows-1 xl:grid-cols-1">
@@ -39,8 +38,13 @@ const ProductListItem = props => {
         <div className="flex flex-col mt-8">
           <h3 className="text-2xl font-semibold text-gray-900">{props.price}</h3>
           {stock}
-          <Button disabled={props.stock === 0} className="mt-2 p-2" onClick={showAlert}>Add to cart</Button>
-          <Alert id={props.id} close={hideAlert} show={alertAlive}>Added {props.name} to cart!</Alert>
+          <AddToCart data={
+            {
+              id: props.id,
+              name: props.name,
+              price: props.price
+            }
+          } />
         </div>
       </div>
     </Card>

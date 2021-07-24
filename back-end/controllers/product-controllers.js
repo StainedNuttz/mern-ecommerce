@@ -1,10 +1,9 @@
-const { v4: uuid } = require('uuid');
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const isValidObjectId = mongoose.isValidObjectId;
 
-const HttpError = require('../models/http-error');
 const { Product, Review } = require('../models/product');
+const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
 const getAllProducts = async (req, res, next) => {

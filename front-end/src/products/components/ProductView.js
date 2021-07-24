@@ -3,8 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 
 import Splitter from '../../shared/components/UI/Splitter';
 import Card from '../../shared/components/UI/Card';
-import Button from '../../shared/components/UI/Button';
 
+import AddToCart from './AddToCart';
 import ReviewList from './ReviewList';
 import ProductViewSection from './ProductViewSection';
 import ProductViewReview from './ProductViewReview';
@@ -21,6 +21,7 @@ import applePay from '@iconify-icons/logos/apple-pay';
 import { Icon } from '@iconify/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import { CashIcon } from '@heroicons/react/solid';
+import Modal from '../../shared/components/UI/Modal';
 
 const general = {
   "desc": <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.<br /><br />Deserunt at id accusantium neque quo, quam maiores eius molestias cumque laboriosam corrupti eos nisi fugiat quia. Laudantium sapiente eos commodi cupiditate. Sint libero iure quia modi, commodi ratione tempore quod aliquid distinctio ipsam. Ad autem repudiandae asperiores non facere, odit inventore adipisci, velit saepe voluptatibus cum!<br /><br /> Hic autem vitae suscipit reprehenderit reiciendis. Rerum, magnam commodi porro error dignissimos nam quos explicabo aliquid ipsam asperiores voluptatum exercitationem magni eos dolor sed.</p>,
@@ -87,7 +88,7 @@ const ProductView = props => {
 
       {/* INFO */}
       <Card className="text-left p-5 md:row-span-5 md:mb-4">
-        <div className="grid sm:grid-cols-2">
+        <div className="grid sm:grid-cols-2 md:grid-cols-1">
           <div className="flex flex-col justify-between">
             <div>
               <p className="text-3xl font-semibold">{`£${price.toFixed(2)}`}</p>
@@ -106,17 +107,18 @@ const ProductView = props => {
             </div>
 
           </div>
-          <div className="flex flex-col space-y-2 mt-3 sm:mt-0">
-            <Button disabled={stock === 0} className="p-2 px-6">Add to cart</Button>
+          <div className="flex flex-col space-y-2 mt-3 sm:mt-0 md:mt-2">
+            <AddToCart data={
+              {
+                id,
+                name,
+                price
+              }
+            } />
             {auth.isAdmin &&
               <>
-                <ProductViewEdit
-                  productId={id}
-                />
-
-                <ProductViewDelete
-                  productId={id}
-                />
+                <ProductViewEdit productId={id} />
+                <ProductViewDelete productId={id} />
               </>
             }
           </div>

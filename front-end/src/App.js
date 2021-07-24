@@ -13,6 +13,7 @@ import Product from './products/pages/Product';
 import Admin from './authentication/pages/Admin';
 
 import { AuthContext } from './shared/context/auth-context';
+import Checkout from './checkout/pages/Checkout';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,6 +43,9 @@ function App() {
         <Route path="/cart" exact>
           <Cart />
         </Route>
+        <Route path="/checkout" exact>
+          <Checkout />
+        </Route>
       
         { isAdmin &&
           <Route path="/admin" exact>
@@ -66,6 +70,9 @@ function App() {
         </Route>
         <Route path="/cart" exact>
           <Cart />
+        </Route>
+        <Route path="/checkout" exact>
+          <Checkout />
         </Route>
         <Route path="/signup" exact>
           <Signup />
