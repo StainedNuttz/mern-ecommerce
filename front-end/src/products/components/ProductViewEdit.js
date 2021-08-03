@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-
-import { useHttp } from '../../shared/hooks/useHttp';
-import { useForm } from '../../shared/hooks/useForm';
+import React, { useState, useContext } from 'react';
 
 import { VALIDATE_REQUIRED } from '../../shared/utils/validations';
+import { useForm } from '../../shared/hooks/useForm';
+import { useHttp } from '../../shared/hooks/useHttp';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import Form from '../../shared/components/Forms/Form';
 import Button from '../../shared/components/UI/Button';
 import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 
 const ProductViewEdit = props => {
+  const auth = useContext(AuthContext);
   const [isLoading, error, success, sendReq] = useHttp();
   const [formShowing, setFormShowing] = useState(false);
 
@@ -24,7 +25,7 @@ const ProductViewEdit = props => {
           price: formState.inputs.price.value,
           stock: formState.inputs.stock.value
         }),
-        { 'Content-Type': 'application/json' }
+        { 'Authorization': `Bearer ${auth.token}` }
         );
     } catch (err) {}
   }

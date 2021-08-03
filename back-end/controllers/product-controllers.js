@@ -41,7 +41,12 @@ const getProductById = async (req, res, next) => {
   res.status(200).json(product);
 }
 
+// -- PROTECTED ROUTES --
+
 const createProduct = async (req, res, next) => {
+  if (!req.userIsAdmin) {
+    return next(new HttpError(401, 'Authorization failed'));
+  }
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError(422, 'Invalid product data passed in'));
@@ -69,6 +74,10 @@ const createProduct = async (req, res, next) => {
 }
 
 const editProduct = async (req, res, next) => {
+  if (!req.userIsAdmin) {
+    return next(new HttpError(401, 'Authorization failed'));
+  }
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError(422, 'Invalid product data passed in'));
@@ -99,6 +108,10 @@ const editProduct = async (req, res, next) => {
 }
 
 const deleteProduct = async (req, res, next) => {
+  if (!req.userIsAdmin) {
+    return next(new HttpError(401, 'Authorization failed'));
+  }
+
   let product;
   try {
     product = await Product.findById(req.params.pid).exec();
@@ -118,6 +131,9 @@ const deleteProduct = async (req, res, next) => {
 }
 
 const deleteAllProducts = async (req, res, next) => {
+  if (!req.userIsAdmin) {
+    return next(new HttpError(401, 'Authorization failed'));
+  }
   await Product.deleteMany().exec();
 
   res.json({ message: 'All products deleted' });
@@ -127,6 +143,7 @@ const deleteAllProducts = async (req, res, next) => {
 const createReview = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log(req.body);
     console.log(errors)
     return next(new HttpError(422, 'Invalid review data'));
   }

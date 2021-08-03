@@ -47,7 +47,8 @@ const Login = () => {
         }),
         { 'Content-Type': 'application/json' }
       );
-      auth.login();
+      const { id, username, isAdmin, token } = res.user;
+      auth.login({ id, username, isAdmin }, token);
       if (res.isAdmin) { auth.setIsAdmin(true) }
       resetValues();
     } catch (err) {

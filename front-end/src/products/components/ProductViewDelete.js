@@ -11,10 +11,10 @@ import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 const ProductViewDelete = props => {
   const history = useHistory();
   const [isLoading, error, success, sendReq] = useHttp();
-  const [productDeleteModalShowing, setProductDeleteModalShowing] = useState(false);
+  const [modalShowing, setModalShowing] = useState(false);
 
-  const showModal = () => { setProductDeleteModalShowing(true) }
-  const hideModal = () => { setProductDeleteModalShowing(false) }
+  const showModal = () => { setModalShowing(true) }
+  const hideModal = () => { setModalShowing(false) }
 
   const deleteHandler = async () => {
     try {
@@ -23,13 +23,14 @@ const ProductViewDelete = props => {
         'DELETE'
       );
       history.go(0);
-    } catch (err) { }
+    } catch (err) {}
+    hideModal();
   }
 
   return (
     <>
       <Button onClick={showModal} danger className="p-2 px-6">Delete product</Button>
-      {productDeleteModalShowing &&
+      {modalShowing &&
         <Modal yes={deleteHandler} no={hideModal}>
           Are you sure you want to delete this product?
         </Modal>

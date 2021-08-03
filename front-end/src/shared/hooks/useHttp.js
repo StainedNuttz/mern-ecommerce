@@ -1,7 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-const URL = 'http://192.168.1.99:5000';
-
 export const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -16,18 +14,24 @@ export const useHttp = () => {
     const abortController = new AbortController();
     currentHttpRequests.current.push(abortController);
 
+    if (method === 'POST' || method === 'PATCH') {
+      headers = {
+        ...headers,
+        'Content-Type': 'application/json'
+      }
+    }
+
     try {
-      const response = await fetch(URL + endpoint, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL + endpoint, {
         method,
-        body,
         headers,
+        body,
         signal: abortController.signal
       });
 
       const responseData = await response.json();
 
       currentHttpRequests.current = currentHttpRequests.current.filter(req => req !== abortController);
-  
       if (response.ok) {
         setIsLoading(false);
         setSuccess(responseData.message);

@@ -1,51 +1,68 @@
 import React, { useRef, useState } from 'react';
-
-import { useHttp } from '../../shared/hooks/useHttp';
-
+import { PayPalButton } from 'react-paypal-button-v2';
 import Button from '../../shared/components/UI/Button';
 
-const Checkout = props => {
-  const [isConfirmPay, setIsConfirmPay] = useState(false);
-  const [isPaid, setIsPaid] = useState(false);
-  const [isLoading, error, success, sendReq] = useHttp();
+import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 
-  const step1 = async () => {
-    try {
-      const res = await sendReq(
-        '/api/checkout/order',
-        'POST',
-        JSON.stringify({
-          items: [
-            {
-              name: 'lol',
-              price: '49.99'
-            }
-          ],
-          total_cost: '49.99'
-        }),
-        { 'Content-Type': 'application/json' }
-      );
-      console.log(res);
-    } catch (err) { console.log(err) }
+import { useForm } from '../../shared/hooks/useForm';
+import { VALIDATE_REQUIRED } from '../../shared/utils/validations';
+
+import Step1 from '../components/Step1';
+import Step2 from '../components/Step2';
+import Step3 from '../components/Step3';
+
+const Checkout = props => {
+  const [step, setStep] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState('paypal');
+
+  const colors = {
+    disabled: 'text-gray-300',
+    enabled: 'text-blue-300',
+    current: 'text-blue-500',
   }
 
+  const headers = {
+    1: 'Enter your shipping details',
+    2: 'Choose a payment method',
+    3: 'Confirm details'
+  }
+
+  // for step 1
+  const nextHandler = () => setStep(2);
+  const addressInputs = [
+    {
+      id: 'name',
+      data: {
+        type: 'text',
+        placeholder: 'Recipient name or company name',
+        validityRules: {
+          [VALIDATE_REQUIRED]: 'Please enter in a name'
+        },
+        layout: 'col-span-2 mb-4'
+      }
+    },
+  ]
+  const [formState, changeHandler, submitHandler, resetValues] =
+    useForm(addressInputs, { isValid: false }, nextHandler);
+
   return (
-    <div className="w-[320px]">
-      {!isConfirmPay && !isPaid &&
-        <Button onClick={step1} className="p-2 px-20 flex justify-center items-center tracking-wider">
-          Pay with <i className="fab fa-cc-paypal ml-2 text-3xl"></i>
-        </Button>
-      }
-      {isConfirmPay && 
-        <div>
-          <Button className="text-xl p-2">Pay now</Button>
+    <div>
+      <ul className="flex text-sm space-x-12 justify-center my-6">
+        <li className={step === 1 ? colors.current : (step > 1) ? colors.enabled : colors.disabled}>Shipping</li>
+        <li className={step === 2 ? colors.current : (step > 2) ? colors.enabled : colors.disabled}>Payment</li>
+        <li className={step === 3 ? colors.current : (step > 3) ? colors.enabled : colors.disabled}>Confirm & Pay</li>
+      </ul>
+
+      {/* steps */}
+      <div className="flex justify-center">
+        <div className="my-4">
+          <h2 className="text-3xl mb-6">{headers[step]}</h2>
+          {step === 1 && <Step1 formStuff={[formState, changeHandler, submitHandler, resetValues]} step={setStep} />}
+          {step === 2 && <Step2 paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} step={setStep} />}
+          {step === 3 && <Step3 paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} step={setStep} />}
         </div>
-      }
-      {isPaid && 
-        <div>
-          <h2 className="text-xl">Thank you, your order has been placed.</h2>
-        </div>
-      }
+      </div>
+
     </div>
   );
 }

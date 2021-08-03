@@ -90,7 +90,7 @@ const ProductView = props => {
       <Card className="text-left p-5 md:row-span-5 md:mb-4">
         <div className="grid sm:grid-cols-2 md:grid-cols-1">
           <div className="flex flex-col justify-between">
-            <div>
+            <div className="mb-2">
               <p className="text-3xl font-semibold">{`£${price.toFixed(2)}`}</p>
               <div className="text-base font-normal">{_stock}</div>
             </div>
@@ -141,7 +141,7 @@ const ProductView = props => {
       {/* WRITE REVIEW */}
       <ProductViewReview
         productId={id}
-        ref={writeReviewRef}
+        writeReviewRef={writeReviewRef}
       />
 
       {/* REVIEWS */}

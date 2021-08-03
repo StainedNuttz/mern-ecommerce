@@ -64,17 +64,19 @@ const formReducer = (state, action) => {
       }
 
     case 'RESET':
+      // current form inputs
       const resetInputs = {
         ...state.inputs
       }
 
       let inputsToReset;
-      // if NOT passed in as arg, we will just clear all inputs instead
+      // if no args, we will just clear all inputs instead
       inputsToReset = action.inputsToReset || Object.keys(state.inputs);
       
+      // for each input to reset (using matching indexes)
       inputsToReset.forEach(i => {
         resetInputs[i] = {
-          ...resetInputs,
+          ...resetInputs[i],
           value: '',
           isValid: false,
           validity: validate('', resetInputs[i].validityRules)
@@ -99,7 +101,7 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
     const value = i.data.value || '';
     inputs[i.id] = {
       value: value,
-      isValid: i.data.isValid || false,
+      isValid: i.data.isValid || (Object.entries(i.data.validityRules).length === 0 ? true : false),
       validityRules: i.data.validityRules || {},
       validity: validate(value, i.data.validityRules)
     }

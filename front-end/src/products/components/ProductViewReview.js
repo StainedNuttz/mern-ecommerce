@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Card from '../../shared/components/UI/Card';
 import Info from '../../shared/components/UI/Info';
 import Form from '../../shared/components/Forms/Form';
 
 import { VALIDATE_MIN, VALIDATE_MAX, VALIDATE_REQUIRED } from '../../shared/utils/validations';
-
-import { useHttp } from '../../shared/hooks/useHttp';
 import { useForm } from '../../shared/hooks/useForm';
+import { useHttp } from '../../shared/hooks/useHttp';
+
+import { AuthContext } from '../../shared/context/auth-context';
 
 const inputs = [
   {
@@ -36,6 +37,7 @@ const inputs = [
 ]
 
 const ProductViewReview = props => {
+  const auth = useContext(AuthContext);
   const [isLoading, error, success, sendReq] = useHttp();
   
   const submitReview = async () => {
@@ -47,11 +49,12 @@ const ProductViewReview = props => {
           title: formState.inputs['review-title'].value,
           text: formState.inputs['review-text'].value,
           rating: 5,
-          user: '60ec01b44f3b583256306358',
+          user: auth.userData.id,
           date: new Date()
         }),
-        { 'Content-Type': 'application/json' }
+        { 'Authorization': `Bearer ${auth.token}` }
       );
+      console.log(auth.token)
       resetValues();
     } catch (err) {
     }
@@ -61,7 +64,7 @@ const ProductViewReview = props => {
     useForm(inputs, { isValid: false }, submitReview);
 
   return (
-    <Card ref={props.ref} className="p-3 md:col-span-2 text-left">
+    <Card ref={props.writeReviewRef} className="p-3 md:col-span-2 text-left">
       <Info color="yellow">
         You purchased this item on <span className="font-semibold">Jul 13</span>
       </Info>

@@ -2,6 +2,7 @@ const express = require('express');
 const { check } = require('express-validator');
 
 const productControllers = require('../controllers/product-controllers');
+const authCheck = require('../middleware/auth-check');
 
 const router = express.Router();
 
@@ -9,29 +10,9 @@ router.get('/', productControllers.getAllProducts);
 
 router.get('/:pid', productControllers.getProductById);
 
-router.post('/:pid/review',
-  [
-    check('title')
-      .not()
-      .isEmpty(),
-    check('text')
-      .not()
-      .isEmpty(),
-    check('rating')
-      .isLength({min: 0.5, max: 5})
-      .custom(value => {
-        return (value % 0.5) === 0;
-      }),
-    check('date')
-      .not()
-      .isEmpty(),
-    check('user')
-      .isMongoId()
-  ],
-  productControllers.createReview
-);
+router.use(authCheck);
 
-router.delete('/:pid/review', productControllers.deleteReview);
+// -- PROTECTED ROUTES --
 
 router.post('/new',
   [
@@ -62,9 +43,9 @@ router.patch('/:pid',
     // check('price')
     //   .exists()
     //   .isDecimal({ force_decimal: false, decimal_digits: 2, locale: 'en-GB' }),
-    check('stock')
-      .exists()
-      .isNumeric()
+    // check('stock')
+    //   .exists()
+    //   .isNumeric()
   ],
   productControllers.editProduct
 );
@@ -72,5 +53,29 @@ router.patch('/:pid',
 router.delete('/', productControllers.deleteAllProducts);
 
 router.delete('/:pid', productControllers.deleteProduct);
+
+router.post('/:pid/review',
+  [
+    check('title')
+      .not()
+      .isEmpty(),
+    check('text')
+      .not()
+      .isEmpty(),
+    check('rating')
+      .isLength({ min: 0.5, max: 5 })
+      .custom(value => {
+        return (value % 0.5) === 0;
+      }),
+    check('date')
+      .not()
+      .isEmpty(),
+    check('user')
+      .isMongoId()
+  ],
+  productControllers.createReview
+);
+
+router.delete('/:pid/review', productControllers.deleteReview);
 
 module.exports = router;

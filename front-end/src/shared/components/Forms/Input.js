@@ -6,7 +6,7 @@ const borders = {
   green: ' focus:border-green-500 border-green-500'
 }
 
-const baseBorder = 'resize-none w-full focus:ring-0 text-gray-700 px-2 text-base';
+const baseBorder = 'resize-none w-full focus:ring-0 text-gray-700 px-2 text-sm';
 
 const Input = props => {
   // this input's states
@@ -24,7 +24,7 @@ const Input = props => {
     <div>
       {
         Object.keys(validityState).map(rule => {
-          return !validityState[rule] && formState.submitted && <p className="text-sm mt-1 text-red-600">{validityRules[rule].errorMsg}</p>
+          return validityState[rule] === false && formState.submitted && <p className="text-sm mt-1 text-red-600">{validityRules[rule].errorMsg}</p>
         })
       }
     </div>
@@ -48,7 +48,7 @@ const Input = props => {
       content = <textarea
         id={id}
         disabled={props.disabled}
-        className={border}
+        className={`${border} text-sm`}
         placeholder={placeholder}
         onBlur={() => setBeenTouched(true)}
         onChange={onChange}
@@ -69,10 +69,9 @@ const Input = props => {
   }
 
   return (
-    <div>
+    <div className={props.className}>
       {content}
       {errors}
-      {/* {formState.submittedSuccess && <p className="text-sm mt-1 text-green-600">{successText}</p>} */}
     </div>
   );
 }

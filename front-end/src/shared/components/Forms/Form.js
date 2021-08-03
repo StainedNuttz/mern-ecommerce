@@ -8,10 +8,9 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 const Form = props => {
   const { formState, changeHandler, submitHandler } = props;
   return (
-    <form className={props.className} autoComplete="off">
-      {props.children}
+    <form autoComplete="off">
       {props.isLoading && <div className="my-2 flex justify-center"><LoadingSpinner /></div>}
-      <div className="space-y-2">
+      <div className={`grid gap-y-2 ${props.className} grid-cols-${props.cols} ${props.gap}`}>
         {props.inputs.map(input => {
             const validityRules = input.data.validityRules;
             for (let r in validityRules) {
@@ -24,6 +23,7 @@ const Form = props => {
   
             return (
               <Input
+                className={input.data.layout}
                 id={input.id}
                 disabled={props.isLoading}
                 type={input.data.type}
@@ -40,12 +40,14 @@ const Form = props => {
           })
         }
       </div>
-      <div className="mt-1 md:mt-2 flex items-center">
-        <Button
-          onClick={submitHandler}
-          className="p-2 px-3">
-            {props.btnText || 'Submit'}
-        </Button>
+      <div className="mt-1 md:mt-4 flex items-center">
+        {props.button}
+        {!props.button &&
+          <Button
+            onClick={submitHandler}>
+              {props.btnText || 'Submit'}
+          </Button>
+        }
         {props.success && formState.submittedSuccess && <p className="text-green-500 font-bold text-base ml-3">{props.success}</p>}
         {props.error && <p className="text-red-500 text-base ml-3">{props.error}</p>}
       </div>

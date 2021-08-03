@@ -2,9 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo')
+
 const userRoutes = require('./routes/user-routes');
 const productRoutes = require('./routes/product-routes');
-const checkoutRoutes = require('./routes/checkout-routes');
 
 const HttpError = require('./models/http-error');
 
@@ -17,11 +19,10 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
   next();
-})
+});
 
 app.use('/api', userRoutes);
 app.use('/api/products', productRoutes);
-app.use('/api/checkout', checkoutRoutes);
 
 // if no route exists
 app.use((req, res, next) => {
@@ -40,6 +41,6 @@ app.use((error, req, res, next) => {
 });
 
 // connect to mongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ek8qv.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`)
   .then(() => app.listen(5000))
   .catch(err => console.log(err));
