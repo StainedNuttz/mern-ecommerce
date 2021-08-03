@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { VALIDATE_REQUIRED } from '../../shared/utils/validations';
-
-import Form from '../../shared/components/Forms/Form';
-
 import { useHttp } from '../../shared/hooks/useHttp';
 import { useForm } from '../../shared/hooks/useForm';
 
+import { AuthContext } from '../../shared/context/auth-context';
+
+import Form from '../../shared/components/Forms/Form';
+
 const Admin = () => {
+  const auth = useContext(AuthContext);
   const inputs = [
     {
       id: 'brand',
@@ -64,7 +66,7 @@ const Admin = () => {
           price: formState.inputs.price.value,
           stock: formState.inputs.stock.value,
         }),
-        { 'Content-Type': 'application/json' }
+        { 'Authentication': `Bearer ${auth.token}` }
       );
       resetValues();
     } catch (err) {}
