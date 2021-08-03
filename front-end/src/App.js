@@ -34,7 +34,7 @@ function App() {
   const [userData, setUserData] = useState(null);
 
   const login = useCallback((userData, token, expiry) => {
-    setUserData(userData)
+    setUserData(userData);
     setToken(token);
     
     // save token + user data

@@ -12,7 +12,7 @@ const Navigation = props => {
           props.links.map(l => {
             return (
               (
-                (l.admin && auth.isAdmin) ||
+                (l.admin && auth.userData && auth.userData.isAdmin) ||
                 (l.auth === null) ||
                 (l.auth === true && auth.isLoggedIn) ||
                 (l.auth === false && !auth.isLoggedIn)

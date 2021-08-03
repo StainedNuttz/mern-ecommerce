@@ -115,7 +115,7 @@ const ProductView = props => {
                 price
               }
             } />
-            {auth.isAdmin &&
+            {auth.userData && auth.userData.isAdmin &&
               <>
                 <ProductViewEdit productId={id} />
                 <ProductViewDelete productId={id} />

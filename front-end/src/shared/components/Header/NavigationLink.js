@@ -24,10 +24,10 @@ const NavigationLink = props => {
       }
 
       {!props.link && !props.onClick &&
-        <p className="font-bold tracking-wide flex items-center">
-          <div className="border-2 border-black bg-white rounded-full w-[40px] h-[40px] mr-2"></div>
+        <div className="font-bold tracking-wide flex items-center">
+          <p className="border-2 border-black bg-white rounded-full w-[40px] h-[40px] mr-2"></p>
           <span className="mb-1">{props.text}</span>
-        </p>
+        </div>
       }
 
     </li>

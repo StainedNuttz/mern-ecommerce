@@ -21,7 +21,7 @@ const Product = () => {
       } catch (err) {}
     }
     getProduct();
-  }, [sendRequest]);
+  }, [id, sendRequest]);
 
   return (
     <div className="text-center text-xl flex flex-col items-center">
