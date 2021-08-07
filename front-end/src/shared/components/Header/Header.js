@@ -23,8 +23,8 @@ const Header = props => {
   return (
     <React.Fragment>
       {/* Side nav */}
-      { sideNavIsOpen && <Backdrop onClick={closeSideNav} /> }
-      <SideNav onClick={closeSideNav} show={sideNavIsOpen} />
+      {sideNavIsOpen && <Backdrop onClick={closeSideNav} /> }
+      <SideNav navClick={closeSideNav} show={sideNavIsOpen} />
 
       {/* Main header */}
       <header className={`text-white bg-blue-700 ${props.className} relative z-10`}>
@@ -34,7 +34,7 @@ const Header = props => {
           <div className="flex sm:hidden justify-between items-center px-3">
             <Hamburger onClick={openSideNav} />
             <Navigation links={[
-              { text: <ShoppingCartIcon className="text-white w-7 mt-1 hover:text-blue-100" />, link: '/cart' },
+              { auth: null, text: <ShoppingCartIcon className="text-white w-7 mt-1 hover:text-blue-100" />, link: '/cart' },
             ]} />
           </div>
 

@@ -18,11 +18,14 @@ const Navigation = props => {
                 (l.auth === false && !auth.isLoggedIn)
               ) &&
               <NavigationLink
-                key={Math.random()}
-                onClick={props.onClick || l.onClick}
+                key={l.text.toString().split(' ').join('_')}
+                style={l.style}
+                mobile={props.mobile}
+                navClick={props.navClick}
+                onClick={l.onClick}
                 text={l.text}
                 link={l.link}
-                nounderline={l.nounderline}
+                nounderline={!!l.nounderline}
               />
             );
           })

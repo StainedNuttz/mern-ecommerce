@@ -108,13 +108,7 @@ const ProductView = props => {
 
           </div>
           <div className="flex flex-col space-y-2 mt-3 sm:mt-0 md:mt-2">
-            <AddToCart data={
-              {
-                id,
-                name,
-                price
-              }
-            } />
+            <AddToCart data={{id, name, price, stock}} />
             {auth.userData && auth.userData.isAdmin &&
               <>
                 <ProductViewEdit productId={id} />

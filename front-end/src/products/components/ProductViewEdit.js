@@ -39,7 +39,7 @@ const ProductViewEdit = props => {
 
       changeHandler('brand', res.brand);
       changeHandler('name', res.name);
-      changeHandler('price', res.price);
+      changeHandler('price', res.price.toFixed(2));
       changeHandler('stock', res.stock);
     } catch (err) {}
   }

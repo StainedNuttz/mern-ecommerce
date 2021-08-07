@@ -1,0 +1,2 @@
+(this["webpackJsonpmern-ecommerce"]=this["webpackJsonpmern-ecommerce"]||[]).push([[8],{61:function(e,c,r){"use strict";r.r(c);r(0);var n=r(1);c.default=function(){return Object(n.jsx)("div",{children:"Explore"})}}}]);
+//# sourceMappingURL=8.8706c43e.chunk.js.map

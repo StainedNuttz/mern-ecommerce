@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const querystring = require('querystring');
 const mongoose = require('mongoose');
 const isValidObjectId = mongoose.isValidObjectId;
 
@@ -6,17 +7,34 @@ const { Product, Review } = require('../models/product');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
+// get all products OR selected products from query string
 const getAllProducts = async (req, res, next) => {
-  let products;
-  try {
-    products = await Product.find().exec();
-  } catch (err) {
-    return next(new HttpError(500, err));
-  } finally {
-    if (!products) return next(new HttpError(404, 'Could not find any products'));
+  if (req.query.ids && Array.isArray(req.query.ids)) {
+    let products = [];
+    for (p of req.query.ids) {
+      let product;
+      try {
+        product = await Product.findById(p).exec();
+        if (product) { 
+          const { id, name, price, stock } = product;
+          products.push({ id, name, price, stock });
+        }
+      } catch (err) {
+        return next(new HttpError(422, 'Invalid product ID(s) passed in'));
+      }
+    }
+    res.status(200).json({ products })
+  } else {
+    let products;
+    try {
+      products = await Product.find().exec();
+    } catch (err) {
+      return next(new HttpError(500, err));
+    } finally {
+      if (!products) return next(new HttpError(404, 'Could not find any products'));
+    }
+    res.status(200).json({ products: products.map(p => p.toObject({ getters: true })) })
   }
-
-  res.status(200).json({ products: products.map(p => p.toObject({ getters: true })) })
 }
 
 const getProductById = async (req, res, next) => {
@@ -59,7 +77,7 @@ const createProduct = async (req, res, next) => {
     name,
     image: image || 'image',
     price,
-    stock,
+    stock: stock <= 0 ? 0 : stock,
     rating: 0,
     reviews: []
   });
@@ -96,7 +114,7 @@ const editProduct = async (req, res, next) => {
   product.name = name || product.name;
   product.image = image || product.image;
   product.price = price || product.price;
-  product.stock = stock || product.stock;
+  product.stock = stock <= 0 ? 0 : stock || product.stock;
 
   try {
     await product.save();

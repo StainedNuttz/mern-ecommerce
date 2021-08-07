@@ -8,9 +8,9 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 const Form = props => {
   const { formState, changeHandler, submitHandler } = props;
   return (
-    <form autoComplete="off">
+    <form autoComplete="off" className={`w-full ${props.className}`}>
       {props.isLoading && <div className="my-2 flex justify-center"><LoadingSpinner /></div>}
-      <div className={`grid gap-y-2 ${props.className} grid-cols-${props.cols} ${props.gap}`}>
+      <div className={`grid gap-y-2 grid-cols-${props.cols} ${props.gap}`}>
         {props.inputs.map(input => {
             const validityRules = input.data.validityRules;
             for (let r in validityRules) {
@@ -25,6 +25,7 @@ const Form = props => {
               <Input
                 className={input.data.layout}
                 id={input.id}
+                key={input.id}
                 disabled={props.isLoading}
                 type={input.data.type}
                 placeholder={input.data.placeholder}

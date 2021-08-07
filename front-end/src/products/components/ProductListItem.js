@@ -36,13 +36,14 @@ const ProductListItem = props => {
           </Link>
         </div>
         <div className="flex flex-col mt-8">
-          <h3 className="text-2xl font-semibold text-gray-900">{props.price}</h3>
+          <h3 className="text-2xl font-semibold text-gray-900">£{props.price.toFixed(2)}</h3>
           {stock}
           <AddToCart data={
             {
               id: props.id,
               name: props.name,
-              price: props.price
+              price: props.price,
+              stock: props.stock
             }
           } />
         </div>

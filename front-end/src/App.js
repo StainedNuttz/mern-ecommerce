@@ -51,6 +51,7 @@ function App() {
   }, []);
 
   const logout = useCallback(() => {
+    console.log('LOGGING OUT');
     setUserData(null);
     setToken(null);
     setTokenExpiration(null);

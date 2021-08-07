@@ -15,7 +15,7 @@ const ProductList = props => {
           image={image4}
           brand={p.brand}
           name={p.name}
-          price={`£${p.price.toFixed(2)}`}
+          price={p.price}
           stock={p.stock}
           reviews={p.reviews.length}
           rating={p.rating}

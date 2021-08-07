@@ -45,11 +45,10 @@ const Login = () => {
           email: formState.inputs.email.value,
           password: formState.inputs.password.value
         }),
-        { 'Content-Type': 'application/json' }
+        {}
       );
       const { id, username, isAdmin, token } = res.user;
       auth.login({ id, username, isAdmin }, token);
-      resetValues();
     } catch (err) {
       resetValues(['password']);
     }
@@ -60,7 +59,7 @@ const Login = () => {
   return (
     <div className="flex justify-center">
       <Form
-        className="w-[32rem]"
+        className="max-w-[32rem]"
         btnText="Login"
         isLoading={isLoading}
         error={error}

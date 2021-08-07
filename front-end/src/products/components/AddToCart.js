@@ -19,6 +19,7 @@ const AddToCart = ({ data }) => {
           id: data.id,
           name: data.name,
           price: data.price,
+          stock: data.stock,
           inCart: 1
         }
       );
@@ -31,7 +32,7 @@ const AddToCart = ({ data }) => {
   return (
     <>
       <Button 
-        disabled={data.stock === 0}
+        disabled={data.stock <= 0}
         className="mt-2 p-2"
         onClick={() => {
           showAlert();

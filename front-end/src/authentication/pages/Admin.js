@@ -66,7 +66,7 @@ const Admin = () => {
           price: formState.inputs.price.value,
           stock: formState.inputs.stock.value,
         }),
-        { 'Authentication': `Bearer ${auth.token}` }
+        { 'Authorization': `Bearer ${auth.token}` }
       );
       resetValues();
     } catch (err) {}
@@ -79,7 +79,7 @@ const Admin = () => {
       <h2 className="text-4xl font-bold mb-5">Admin Dashboard</h2>
       <div className="">
         <Form
-          className="relative"
+          className="relative max-w-[32rem]"
           btnText="Create"
           isLoading={isLoading}
           error={error}
@@ -91,30 +91,6 @@ const Admin = () => {
         >
           <h3 className="text-2xl mb-4">Create product</h3>
         </Form>
-        {/* <Form
-          className="relative"
-          btnText="Create"
-          isLoading={isLoading}
-          error={error}
-          formState={formState}
-          submitHandler={submitHandler}
-          changeHandler={changeHandler}
-          inputs={inputs}
-        >
-          <h3 className="text-2xl mb-4">Create product</h3>
-        </Form>
-        <Form
-          className="relative"
-          btnText="Create"
-          isLoading={isLoading}
-          error={error}
-          formState={formState}
-          submitHandler={submitHandler}
-          changeHandler={changeHandler}
-          inputs={inputs}
-        >
-          <h3 className="text-2xl mb-4">Create product</h3>
-        </Form> */}
       </div>
     </>
   )

@@ -4,12 +4,11 @@ import { NavLink } from 'react-router-dom'
 const NavigationLink = props => {
   return (
     <li className="list-none">
-      {props.link && 
-        <NavLink 
-          onClick={props.onClick}
-          exact
-          activeClassName={`${!props.nounderline && 'underline'}`}
-          className={`${!props.nounderline && "hover:underline"} ${props.className} text-base tracking-wide`} 
+      {props.link &&
+        <NavLink
+          onClick={props.navClick}
+          activeClassName={`${!props.nounderline && !props.mobile && 'underline'}`}
+          className={`${!props.nounderline && !props.mobile && 'hover:underline'} text-base tracking-wide ${props.style}`}
           to={props.link}>
             {props.text}
         </NavLink>
@@ -17,19 +16,22 @@ const NavigationLink = props => {
 
       {!props.link && props.onClick &&
         <button
-          onClick={props.onClick}
-          className="hover:underline">
-            {props.text}
+          onClick={() => {
+            props.onClick();
+            if (props.navClick) { props.navClick() }
+          }}
+          className={`text-base tracking-wide ${props.style}`}
+        >
+          {props.text}
         </button>
       }
 
       {!props.link && !props.onClick &&
-        <div className="font-bold tracking-wide flex items-center">
+        <div className="font-semibold tracking-wide flex items-center">
           <p className="border-2 border-black bg-white rounded-full w-[40px] h-[40px] mr-2"></p>
           <span className="mb-1">{props.text}</span>
         </div>
       }
-
     </li>
   );
 }

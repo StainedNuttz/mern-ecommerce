@@ -18,13 +18,17 @@ const Input = props => {
   // formState contains info about actual validation, this input only stores the error message assigned to each possible error
   const formStateInput = formState.inputs[id];
   const validityState = formStateInput.validity;
-
   // display any validation errors
   const errors = (
     <div>
       {
         Object.keys(validityState).map(rule => {
-          return validityState[rule] === false && formState.submitted && <p className="text-sm mt-1 text-red-600">{validityRules[rule].errorMsg}</p>
+          return validityState[rule] === false && formState.submitted && 
+          <p 
+            key={validityRules[rule].errorMsg.toString().split(' ').join('_')}
+            className="text-sm mt-1 text-red-600">
+              {validityRules[rule].errorMsg}
+          </p>
         })
       }
     </div>
@@ -46,6 +50,7 @@ const Input = props => {
   switch (props.type) {
     case 'textarea':
       content = <textarea
+        key={id}
         id={id}
         disabled={props.disabled}
         className={`${border} text-sm`}
@@ -57,6 +62,7 @@ const Input = props => {
       break;
     default:
       content = <input
+        key={id}
         id={id}
         disabled={props.disabled}
         type={type}

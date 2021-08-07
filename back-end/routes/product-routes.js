@@ -14,6 +14,7 @@ router.use(authCheck);
 
 // -- PROTECTED ROUTES --
 
+// create product
 router.post('/new',
   [
     check('name')
@@ -30,22 +31,23 @@ router.post('/new',
   productControllers.createProduct
 );
 
+// edit product
 router.patch('/:pid',
   [
-    // check('name')
-    //   .exists()
-    //   .not()
-    //   .isEmpty(),
-    // check('brand')
-    //   .exists()
-    //   .not()
-    //   .isEmpty(),
-    // check('price')
-    //   .exists()
-    //   .isDecimal({ force_decimal: false, decimal_digits: 2, locale: 'en-GB' }),
-    // check('stock')
-    //   .exists()
-    //   .isNumeric()
+    check('name')
+      .exists()
+      .not()
+      .isEmpty(),
+    check('brand')
+      .exists()
+      .not()
+      .isEmpty(),
+    check('price')
+      .exists()
+      .isDecimal({ force_decimal: false, decimal_digits: 2, locale: 'en-GB' }),
+    check('stock')
+      .exists()
+      .isNumeric()
   ],
   productControllers.editProduct
 );

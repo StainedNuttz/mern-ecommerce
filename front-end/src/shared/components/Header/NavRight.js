@@ -9,7 +9,7 @@ const NavRight = props => {
   const auth = useContext(AuthContext);
 
   return (
-    <Navigation className="space-x-6 text-lg" onClick={props.onClick} links={
+    <Navigation className="space-x-6 text-lg" links={
       [
         { admin: true, text: 'Admin', link: '/admin' },
         { auth: false, text: 'Sign up', link: '/signup' },

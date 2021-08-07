@@ -73,7 +73,7 @@ const Signup = () => {
   return (
     <div className="flex justify-center">
       <Form
-        className="w-[32rem] relative"
+        className="max-w-[32rem] relative"
         btnText="Sign up"
         isLoading={isLoading}
         error={error}
