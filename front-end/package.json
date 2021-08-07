@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build & npx tailwindcss build -o ./src/index.css",
+    "build": "npx tailwindcss build -o ./src/index.css & craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
