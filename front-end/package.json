@@ -25,10 +25,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "dev": "npm-run-all --parallel dev:*",
-    "dev:css": "tailwindcss -o src/index.css -w",
-    "dev:server": "craco start",
-    "build": "craco build",
+    "build": "craco build & tailwindcss build -o ./src/index.css",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
