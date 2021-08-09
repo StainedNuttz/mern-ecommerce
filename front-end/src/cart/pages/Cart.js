@@ -8,23 +8,47 @@ import CartItem from '../components/CartItem';
 
 const Cart = props => {
   const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('LOCAL_CART')) || []);
-  const [showModal, setShowModal] = useState(false);
-  const [cartTotal, setCartTotal] = useState(0);
+  const [totalCartPrice, setTotalCartPrice] = useState(0);
 
-  const [isLoading, error, success, sendReq] = useHttp();
+  /**
+  * Makes changes to the cart stored in localStorage and update states
+  * @param id - MongoDB product ID
+  * @param property - The property to change
+  * @param value - The value to set the property to
+  **/
+  const updateCartItem = (id, property, value) => {
+    const cart = JSON.parse(localStorage.getItem('LOCAL_CART'));
+    const index = cart.findIndex(ci => ci.id === id);
 
+    // update states depending on property
+    if (property === 'price') {
+      setTotalCartPrice(totalCartPrice + cart[index].price);
+    }
+    
+    // save to local storage
+    cart[index][property] = value;
+    localStorage.setItem('LOCAL_CART', JSON.stringify(cart));
+    setCartItems(cart);
+  }
+  
   const deleteCartItem = id => {
     const cart = JSON.parse(localStorage.getItem('LOCAL_CART'));
-    const newCart = cart.filter(ci => ci.id !== id);
+    const newCart = cart.filter(ci => {
+      if (ci.id === id) {
+        setTotalCartPrice(totalCartPrice - ci.price * ci.qty);
+        return false;
+      } else { return true }
+    });
     localStorage.setItem('LOCAL_CART', JSON.stringify(newCart));
     setCartItems(newCart);
   }
+
+  const [isLoading, error, success, sendReq] = useHttp();
 
   // on page load, refresh cart data in local storage
   useEffect(() => {
     const refreshCartData = async () => {
       // get array of just product IDs from cart saved in local storage
-      console.log(cartItems);
       const productIds = cartItems.map(ci => ci.id);
       if (productIds.length === 0) return;
 
@@ -51,11 +75,11 @@ const Cart = props => {
         // refreshedData = NEW PRODUCT DATA
         // ci = OLD PRODUCT DATA (we continue to use the inCart var only)
         const refreshedData = res.products[res.products.findIndex(p => p.id === ci.id)];
-        newCartTotal += refreshedData.price * ci.inCart;
+        newCartTotal += refreshedData.price * ci.qty;
         if (refreshedData) {
           newCart.push({
             id: refreshedData.id,
-            inCart: ci.inCart,
+            qty: ci.qty,
             name: refreshedData.name,
             price: refreshedData.price,
             stock: refreshedData.stock
@@ -64,7 +88,7 @@ const Cart = props => {
       }
       // update cart state
       localStorage.setItem('LOCAL_CART', JSON.stringify(newCart));
-      setCartTotal(newCartTotal.toFixed(2));
+      setTotalCartPrice(newCartTotal);
       setCartItems(newCart);
     }
     refreshCartData();
@@ -75,33 +99,37 @@ const Cart = props => {
       {isLoading && <div className="flex justify-center"><LoadingSpinner /></div>}
       {!isLoading && 
         <>
-          <div className="w-4/5 mx-auto">
+          <div className="lg:w-4/5 mx-auto">
             <h2 className="mb-4 text-4xl">Your cart</h2>
             <table className="w-full table-fixed">
-              <thead className="">
+              <thead className="hidden md:table-header-group">
                 <tr className="">
                   <th className=""></th>
-                  <th className=""></th>
-                  <th className=""></th>
-                  <th className=""></th>
-                  <th className="w-16"></th>
-                  <th className="w-16"></th>
+                  <th className="md:w-40"></th>
+                  <th className="md:w-16 md:pr-20"></th>
+                  <th className="md:w-32 md:pr-40"></th>
+                  <th className="md:w-16 md:pr-20"></th>
+                  <th className="md:w-16"></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="block md:table-row-group">
                 {
                   cartItems.map(i => (
-                    <CartItem onDelete={() => setShowModal(true)} data={i} />
+                    <CartItem
+                      cartProps={{totalCartPrice, setTotalCartPrice, deleteCartItem, updateCartItem}}
+                      onDelete={() => setShowModal(true)}
+                      data={i}
+                    />
                   ))
                 }
-                <tr>
+                <tr className="flex justify-end md:table-row">
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td className="py-8">
                     <h3 className="text-lg tracking-wide">Total</h3>
-                    <span className="text-4xl font-bold">{`£${cartTotal}`}</span>
+                    <span className="text-4xl font-bold">{`£${totalCartPrice.toFixed(2)}`}</span>
                   </td>
                   <td></td>
                 </tr>

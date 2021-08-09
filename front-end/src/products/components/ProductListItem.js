@@ -32,7 +32,9 @@ const ProductListItem = props => {
           </div>
           <Link to={link} className="mt-2 text-xs text-gray-700 hover:text-blue-600">{props.brand}</Link>
           <Link id="name" className="text-gray-800 leading-6 text-lg hover:text-blue-600" to={link}>
-            <p className="">{props.name}</p>
+            <p className="line-clamp-3">
+              {props.name}
+            </p>
           </Link>
         </div>
         <div className="flex flex-col mt-8">

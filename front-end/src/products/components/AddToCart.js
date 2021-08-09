@@ -20,7 +20,7 @@ const AddToCart = ({ data }) => {
           name: data.name,
           price: data.price,
           stock: data.stock,
-          inCart: 1
+          qty: 1
         }
       );
     }

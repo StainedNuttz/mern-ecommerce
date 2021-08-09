@@ -31,7 +31,7 @@ const Header = props => {
         <div className="lg:container mx-auto py-5 px-2">
 
           {/* MOBILE */}
-          <div className="flex sm:hidden justify-between items-center px-3">
+          <div className="flex md:hidden justify-between items-center px-3">
             <Hamburger onClick={openSideNav} />
             <Navigation links={[
               { auth: null, text: <ShoppingCartIcon className="text-white w-7 mt-1 hover:text-blue-100" />, link: '/cart' },
@@ -39,7 +39,7 @@ const Header = props => {
           </div>
 
           {/* NON-MOBILE */}
-          <div className="hidden sm:flex sm:items-center sm:justify-between">
+          <div className="hidden md:flex sm:items-center sm:justify-between">
             <NavLeft />
             <NavRight />
           </div>

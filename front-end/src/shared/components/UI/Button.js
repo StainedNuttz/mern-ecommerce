@@ -20,7 +20,7 @@ const Button = props => {
 
   return (
     <button
-      className={`${newClass} p-2 px-3`}
+      className={`p-2 px-3 ${newClass}`}
       onClick={props.onClick}
       disabled={props.disabled}>
         {props.children}
