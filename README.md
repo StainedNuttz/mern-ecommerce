@@ -1,1 +1,1 @@
-# Ecommerce application created with the MERN stack
+# Dummy ecommerce application created using the MERN stack
