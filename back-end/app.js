@@ -7,6 +7,7 @@ const MongoStore = require('connect-mongo')
 
 const userRoutes = require('./routes/user-routes');
 const productRoutes = require('./routes/product-routes');
+const orderRoutes = require('./routes/order-routes');
 
 const HttpError = require('./models/http-error');
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 
 app.use('/api', userRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // if no route exists
 app.use((req, res, next) => {

@@ -161,8 +161,6 @@ const deleteAllProducts = async (req, res, next) => {
 const createReview = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(req.body);
-    console.log(errors)
     return next(new HttpError(422, 'Invalid review data'));
   }
 

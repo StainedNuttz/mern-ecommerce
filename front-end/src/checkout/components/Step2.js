@@ -4,7 +4,7 @@ import Button from '../../shared/components/UI/Button';
 
 const Step2 = props => {
   return (
-    <div>
+    <div className="">
       {!props.paymentMethod && <p>ERROR</p>}
       <div>
         <input type="radio" checked onChange={() => props.setPaymentMethod('paypal')} name="pay" />
@@ -16,9 +16,9 @@ const Step2 = props => {
       </div>
 
       <div className="mt-5 flex w-full justify-between">
-        <Button onClick={() => props.step(1)}>Back</Button>
+        <Button danger onClick={() => props.setStep(1)}>Back</Button>
         <Button onClick={() => {
-          if (props.paymentMethod !== null) { props.step(3) }
+          if (props.paymentMethod !== null) { props.setStep(3) }
         }}>
           Next
         </Button>

@@ -5,11 +5,8 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength: 8 },
-  purchased: [
-    {
-      product: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
-      date: { type: Date, required: true }
-    }
+  orders: [
+    { type: mongoose.Types.ObjectId, required: true }
   ],
   reviews: [mongoose.Types.ObjectId],
   isAdmin: { type: Boolean }

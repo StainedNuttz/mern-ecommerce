@@ -7,7 +7,6 @@ import { AuthContext } from '../../shared/context/auth-context';
 
 import Form from '../../shared/components/Forms/Form';
 import Button from '../../shared/components/UI/Button';
-import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 
 const ProductViewEdit = props => {
   const auth = useContext(AuthContext);

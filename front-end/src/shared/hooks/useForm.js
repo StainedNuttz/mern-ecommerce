@@ -122,6 +122,7 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
       type: 'SUBMIT',
       onSubmit
     });
+    return formState.isValid;
   }
 
   const changeHandler = (id, value) => {
