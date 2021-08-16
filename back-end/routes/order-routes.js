@@ -8,6 +8,7 @@ const router = express.Router();
 
 // router.use(authCheck);
 
+router.get('/user/:uid', orderControllers.getOrdersByUser);
 router.get('/:oid', orderControllers.getOrderById);
 
 router.post('/',

@@ -10,12 +10,13 @@ const Step3 = props => {
   return (
     <div className="">
       <div className="">
-        <p>Payment method: <span className="uppercase">{props.paymentMethod}</span></p>
+        <p className="font-bold">Payment method:</p>
+        <p className="uppercase ml-2">{props.paymentMethod}</p>
+
         <ul className="my-4">
-          Your items:
-          
+          <p className="font-bold">Your items:</p>
           {cartItems.map(ci => (
-            <li className="ml-2">
+            <li key={ci.id} className="ml-2">
               <p>
                 <span className="text-xs mr-2">{ci.qty} x</span>
                 <span className="text-lg">{ci.name}</span>
@@ -23,12 +24,15 @@ const Step3 = props => {
             </li>
           ))}
         </ul>
+
         <div className="">
           <div className="my-4">
-            <p className="mb-2">Addressed to:</p>
-            {Object.keys(address).map(a => (
-              <p>{address[a]}</p>
-            ))}
+            <p className="mb-2 font-bold">Addressed to:</p>
+            <ul>
+              {Object.keys(address).map(a => (
+                <li className="ml-2" key={a}>{address[a]}</li>
+              ))}
+            </ul>
           </div>
           <div>
             <p>Total:</p>
@@ -38,7 +42,7 @@ const Step3 = props => {
         <div className="flex justify-between mt-4">
           <Button danger onClick={() => props.setStep(2)}>Back</Button>
           {!props.isLoading && 
-            <Button className="w-48" onClick={props.confirmOrder}>Confirm order</Button>
+            <Button className="w-48" onClick={props.payNow}>Continue to payment</Button>
           }
           {props.isLoading && <div className="flex w-48 justify-center items-center"><LoadingSpinner /></div>}
         </div>

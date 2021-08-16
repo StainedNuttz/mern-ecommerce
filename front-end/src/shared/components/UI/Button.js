@@ -11,8 +11,9 @@ const Button = props => {
   if (props.to) {
     return (
       <Link
-        to={props.to} 
-        className={newClass}>
+        to={props.to}
+        onClick={props.onClick}
+        className={`p-2 px-3 ${newClass}`}>
           {props.children}
       </Link>
     );

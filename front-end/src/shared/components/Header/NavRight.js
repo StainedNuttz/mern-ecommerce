@@ -14,8 +14,8 @@ const NavRight = props => {
         { admin: true, text: 'Admin', link: '/admin' },
         { auth: false, text: 'Sign up', link: '/signup' },
         { auth: false, text: 'Log in', link: '/login' },
-        { auth: true, text: 'Logout', onClick: auth.logout },
-        { auth: true, text: (auth.userData && auth.userData.username), onClick: null },
+        { auth: true, text: (auth.userData && auth.userData.username || 'null'), link: '/profile/about' },
+        { auth: true, style: 'bg-red-500 hover:bg-red-400 p-2', text: 'Logout', onClick: auth.logout },
         { auth: null, text: <ShoppingCartIcon className="text-white w-7 mt-1 hover:text-blue-100" />, link: '/cart' },
       ]
     } />

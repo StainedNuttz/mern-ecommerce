@@ -2,14 +2,21 @@ import { useState } from 'react';
 
 export const useAlert = (timer) => {
   timer = timer * 1000;
-  const [alertAlive, setAlertAlive] = useState(false);
+  const [alert, setAlert] = useState(false);
 
-  const hideAlert = () => setAlertAlive(false);
+  const hideAlert = () => setAlert(false);
+
+  let alertTimer;
   const showAlert = () => {
-    if (alertAlive) return;
-    setAlertAlive(true);
-    setTimeout(hideAlert, timer);
+    setAlert(true);
+    alertTimer = setTimeout(hideAlert, timer);
+  }
+
+  const cancelTimer = () => {
+    if (alertTimer) {
+      clearTimeout(alertTimer);
+    }
   }
   
-  return [alertAlive, showAlert, hideAlert];
+  return [alert, cancelTimer, showAlert, hideAlert];
 }

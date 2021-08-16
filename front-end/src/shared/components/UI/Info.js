@@ -18,7 +18,7 @@ const Info = props => {
   }
 
   return (
-    <div className={`text-sm border mb-2 p-2.5 ${color}`}>
+    <div className={`text-sm border p-2.5 ${props.className} ${color}`}>
       {props.children}
     </div>
   );

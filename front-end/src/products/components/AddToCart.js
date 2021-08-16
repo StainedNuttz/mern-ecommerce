@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useAlert } from '../../shared/hooks/useAlert';
 
@@ -27,7 +27,13 @@ const AddToCart = ({ data }) => {
     localStorage.setItem('LOCAL_CART', JSON.stringify(items));
   }
 
-  const [alertAlive, showAlert, hideAlert] = useAlert(5);
+  const [alert, cancelTimer, showAlert, hideAlert] = useAlert(5);
+
+  useEffect(() => {
+    return () => {
+      cancelTimer();
+    }
+  });
 
   return (
     <>
@@ -40,7 +46,7 @@ const AddToCart = ({ data }) => {
         }}>
           Add to cart
       </Button>
-      <Alert id={data.id} close={hideAlert} show={alertAlive}>Added {data.name} to cart!</Alert>
+      <Alert id={data.id} close={hideAlert} show={alert}>Added {data.name} to cart!</Alert>
     </>
   );
 }

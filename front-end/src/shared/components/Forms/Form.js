@@ -10,7 +10,7 @@ const Form = props => {
   return (
     <form autoComplete="off" className={`w-full ${props.className}`}>
       {props.isLoading && <div className="my-2 flex justify-center"><LoadingSpinner /></div>}
-      <div className={`grid gap-y-2 grid-cols-${props.cols} ${props.gap}`}>
+      <div className={`grid gap-y-2 ${props.cols} ${props.gap}`}>
         {props.inputs.map(input => {
             const validityRules = input.data.validityRules;
             for (let r in validityRules) {
@@ -43,7 +43,7 @@ const Form = props => {
       </div>
       <div className="mt-1 md:mt-4 flex items-center">
         {props.button}
-        {!props.button &&
+        {!props.button && !props.noBtn &&
           <Button
             onClick={submitHandler}>
               {props.btnText || 'Submit'}

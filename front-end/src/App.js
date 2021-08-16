@@ -5,6 +5,7 @@ import Header from './shared/components/Header/Header';
 import Footer from './shared/components/Footer/Footer';
 
 import Home from './home/pages/Home';
+// import Profile from './profile/pages/Profile';
 // import Signup from './authentication/pages/Signup';
 // import Login from './authentication/pages/Login';
 // import Explore from './explore/pages/Explore';
@@ -24,6 +25,7 @@ const Explore = React.lazy(() => import('./explore/pages/Explore'));
 const Cart = React.lazy(() => import('./cart/pages/Cart'));
 const Product = React.lazy(() => import('./products/pages/Product'));
 const Admin = React.lazy(() => import('./authentication/pages/Admin'));
+const Profile = React.lazy(() => import('./profile/pages/Profile'));
 
 // reference to JS timeout
 let logoutTimer;
@@ -33,10 +35,68 @@ function App() {
   const [tokenExpiration, setTokenExpiration] = useState(null);
   const [userData, setUserData] = useState(null);
 
+  let routes;
+  if (token) {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/explore">
+          <Explore />
+        </Route>
+        <Route path="/cart" exact>
+          <Cart />
+        </Route>
+        <Route path="/checkout" exact>
+          <Checkout />
+        </Route>
+        <Route path="/p/:productId" exact>
+          <Product />
+        </Route>
+        <Route path="/admin" exact>
+          <Admin />
+        </Route>
+        <Route path="/profile">
+          <Profile />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/explore" exact>
+          <Explore />
+        </Route>
+        <Route path="/cart" exact>
+          <Cart />
+        </Route>
+        <Route path="/checkout" exact>
+          <Checkout />
+        </Route>
+        <Route path="/p/:productId" exact>
+          <Product />
+        </Route>
+        <Route path="/signup" exact>
+          <Signup />
+        </Route>
+        <Route path="/login" exact>
+          <Login />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    );
+    
+  }
+
   const login = useCallback((userData, token, expiry) => {
     setUserData(userData);
     setToken(token);
-    
+   
     // save token + user data
     // will keep track of token expiration
     const tokenExpiry = expiry || new Date(Date.now() + 1000 * 60 * 60).toISOString();
@@ -51,7 +111,6 @@ function App() {
   }, []);
 
   const logout = useCallback(() => {
-    console.log('LOGGING OUT');
     setUserData(null);
     setToken(null);
     setTokenExpiration(null);
@@ -80,71 +139,6 @@ function App() {
   }, [token, logout, tokenExpiration]);
 
   // define routes
-  let routes;
-  if (token) {
-    routes = (
-      <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/explore" exact>
-          <Explore />
-        </Route>
-        <Route path="/cart" exact>
-          <Cart />
-        </Route>
-        <Route path="/checkout" exact>
-          <Checkout />
-        </Route>
-      
-        {userData && userData.isAdmin &&
-          <Route path="/admin" exact>
-            <Admin />
-          </Route>
-        }
-
-        <Route path="/p/:productId" exact>
-          <Product />
-        </Route>
-        <Redirect to="/" />
-      </Switch>
-    );
-  } else {
-    routes = (
-      <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/explore" exact>
-          <Explore />
-        </Route>
-        <Route path="/cart" exact>
-          <Cart />
-        </Route>
-        <Route path="/checkout" exact>
-          <Checkout />
-        </Route>
-        <Route path="/signup" exact>
-          <Signup />
-        </Route>
-        <Route path="/login" exact>
-          <Login />
-        </Route>
-
-        {userData && userData.isAdmin &&
-          <Route path="/admin" exact>
-            <Admin />
-          </Route>
-        }
-
-        <Route path="/p/:productId" exact>
-          <Product />
-        </Route>
-        <Redirect to="/" />
-      </Switch>
-    );
-  }
-
   return (
     <AuthContext.Provider value={{
       isLoggedIn: !!token,
@@ -156,7 +150,7 @@ function App() {
       <Router>
         <Header />
         <main className="lg:container mx-auto px-2 my-3 relative">
-          <Suspense 
+          <Suspense
             fallback={
               <div className="flex justify-center">
                 <LoadingSpinner />

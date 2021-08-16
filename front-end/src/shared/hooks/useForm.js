@@ -141,5 +141,5 @@ export const useForm = (initialInputs, initialFormState, onSubmit) => {
     });
   }
 
-  return [formState, changeHandler, submitHandler, resetValues];
+  return [formState, useCallback(changeHandler, []), submitHandler, resetValues];
 }

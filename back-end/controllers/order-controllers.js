@@ -23,6 +23,26 @@ const getOrderById = async (req, res, next) => {
   res.status(200).json(order.toObject({ getters: true }));
 }
 
+const getOrdersByUser = async (req, res, next) => {
+  const { uid } = req.params;
+  if (!isValidObjectId(uid)) {
+    return next(new HttpError(422, 'Invalid user ID'));
+  }
+
+  let foundUser;
+  try {
+    foundUser = await User.findById(uid);
+  } catch (err) {
+    return next(new HttpError(404, 'User not found'));
+  }
+
+  try {
+    await foundUser.populate({ path: 'orders', model: 'Order' }).execPopulate();
+  } catch (err) {}
+
+  res.status(200).json(foundUser.orders);
+}
+
 const createOrder = async (req, res, next) => {
   const result = validationResult(req);
 
@@ -39,8 +59,8 @@ const createOrder = async (req, res, next) => {
 
   const { productsOrdered, amountPaid, paymentMethod, address, user } = req.body;
 
+  let foundUser;
   if (user !== null) {
-    let foundUser;
     try {
       foundUser = await User.findById(user);
       if (!foundUser) { throw 'User not found' }
@@ -72,6 +92,7 @@ const createOrder = async (req, res, next) => {
 
     await session.commitTransaction();
   } catch(err) {
+    console.log(err);
     return next(new HttpError(500, 'Failed to create order, please try again'));
   }
 
@@ -79,4 +100,5 @@ const createOrder = async (req, res, next) => {
 }
 
 exports.getOrderById = getOrderById;
+exports.getOrdersByUser = getOrdersByUser;
 exports.createOrder = createOrder;

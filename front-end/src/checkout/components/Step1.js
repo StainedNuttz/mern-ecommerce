@@ -19,7 +19,7 @@ const Step1 = props => {
         validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in a name'
         },
-        layout: 'col-span-2 mb-4'
+        layout: 'md:col-span-2 mb-4'
       }
     },
     {
@@ -30,7 +30,7 @@ const Step1 = props => {
         validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in an address'
         },
-        layout: 'col-span-2'
+        layout: 'md:col-span-2'
       }
     },
     {
@@ -39,7 +39,7 @@ const Step1 = props => {
         type: 'text',
         placeholder: 'Address line 2',
         validityRules: {},
-        layout: 'col-span-2'
+        layout: 'md:col-span-2'
       }
     },
     {
@@ -50,7 +50,7 @@ const Step1 = props => {
         validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in a country',
         },
-        layout: 'col-span-1'
+        layout: 'md:col-span-1'
       }
     },
     {
@@ -61,7 +61,7 @@ const Step1 = props => {
         validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in a city or town',
         },
-        layout: 'col-span-1'
+        layout: 'md:col-span-1'
       }
     },
     {
@@ -72,7 +72,7 @@ const Step1 = props => {
         validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in a state or county'
         },
-        layout: 'col-span-1'
+        layout: 'md:col-span-1'
       }
     },
     {
@@ -83,7 +83,7 @@ const Step1 = props => {
         validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in a postal or zip code'
         },
-        layout: 'col-span-1'
+        layout: 'md:col-span-1'
       }
     },
     {
@@ -95,7 +95,7 @@ const Step1 = props => {
           [VALIDATE_REQUIRED]: 'Please enter in an email'
           // [VALIDATE_EMAIL]: 'Please enter in a valid email'
         },
-        layout: 'col-span-1 mt-4'
+        layout: 'md:col-span-1 mt-4'
       }
     },
     {
@@ -106,7 +106,7 @@ const Step1 = props => {
         validityRules: {
           [VALIDATE_REQUIRED]: 'Please enter in a phone number'
         },
-        layout: 'col-span-1 mt-4'
+        layout: 'md:col-span-1 md:mt-4'
       }
     }
   ]
@@ -115,23 +115,6 @@ const Step1 = props => {
     useForm(addressInputs, { isValid: false }, () => {})
   ;
 
-  const btn =
-    <div className ="flex w-full justify-end">
-      <Button onClick={e => {
-        if (submitHandler(e)) {
-          const address = {}
-          for (let i in formState.inputs) {
-            address[i] = formState.inputs[i].value;
-          }
-          props.address.current = address;
-          // save address into local storage as well for persisting address for user
-          localStorage.setItem('delivery_address', JSON.stringify(address));
-          
-          props.setStep(2);
-        }
-      }}>Next</Button>
-    </div>
-
   useEffect(() => {
     const address = JSON.parse(localStorage.getItem('delivery_address'));
     if (address) {
@@ -139,15 +122,15 @@ const Step1 = props => {
         changeHandler(a, address[a]);
       }
     }
-  }, []);
+  }, [changeHandler]);
 
   return (
     <div className="">
       <Form
-        button={btn}
+        noBtn
         className=""
-        cols="2"
-        gap="gap-2"
+        cols="grid-cols-1 md:grid-cols-2"
+        gap="md:gap-2"
         btnText="Next"
         isLoading={isLoading}
         error={error}
@@ -156,6 +139,22 @@ const Step1 = props => {
         changeHandler={changeHandler}
         inputs={addressInputs}
       />
+      <div className="flex justify-between mt-3">
+        <Button danger to="/cart">Back to cart</Button>
+        <Button onClick={e => {
+          if (submitHandler(e)) {
+            const address = {}
+            for (let i in formState.inputs) {
+              address[i] = formState.inputs[i].value;
+            }
+            props.address.current = address;
+            // save address into local storage as well for persisting address for user
+            localStorage.setItem('delivery_address', JSON.stringify(address));
+  
+            props.setStep(2);
+          }
+        }}>Next</Button>
+      </div>
     </div>
   );
 }

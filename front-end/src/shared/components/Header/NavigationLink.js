@@ -3,9 +3,10 @@ import { NavLink } from 'react-router-dom'
 
 const NavigationLink = props => {
   return (
-    <li className="list-none">
+    <li className="">
       {props.link &&
         <NavLink
+          exact
           onClick={props.navClick}
           activeClassName={`${!props.nounderline && !props.mobile && 'underline'}`}
           className={`${!props.nounderline && !props.mobile && 'hover:underline'} text-base tracking-wide ${props.style}`}
